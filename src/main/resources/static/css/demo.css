@@ -1,0 +1,145 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video { margin: 0; padding: 0; }
+
+html {
+    width:100%;
+    height:100%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+}
+
+header, section, footer {
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.book {
+    display: inline-block;
+    margin: 20px;
+    padding: 20px;
+    width: 320px;
+    height: 200px;
+}
+
+.book p {
+    padding: 5px;
+}
+
+/***
+   colors.css v2.0.0
+   http://clrs.cc
+   @mrmrs
+   MIT License
+***/
+/*
+   SKINS
+   - Backgrounds
+   - Colors
+*/
+/* Backgrounds */
+.bg-navy {
+    background-color: #001F3F; }
+
+.bg-blue {
+    background-color: #0074D9; }
+
+.bg-aqua {
+    background-color: #7FDBFF; }
+
+.bg-teal {
+    background-color: #39CCCC; }
+
+.bg-olive {
+    background-color: #3D9970; }
+
+.bg-green {
+    background-color: #2ECC40; }
+
+.bg-lime {
+    background-color: #01FF70; }
+
+.bg-yellow {
+    background-color: #FFDC00; }
+
+.bg-orange {
+    background-color: #FF851B; }
+
+.bg-red {
+    background-color: #FF4136; }
+
+.bg-fuchsia {
+    background-color: #F012BE; }
+
+.bg-purple {
+    background-color: #B10DC9; }
+
+.bg-maroon {
+    background-color: #85144B; }
+
+.bg-white {
+    background-color: #fff; }
+
+.bg-gray {
+    background-color: #aaa; }
+
+.bg-silver {
+    background-color: #ddd; }
+
+.bg-black {
+    background-color: #111; }
+
+/* Colors */
+.navy {
+    color: #001F3F; }
+
+.blue {
+    color: #0074D9; }
+
+.aqua {
+    color: #7FDBFF; }
+
+.teal {
+    color: #39CCCC; }
+
+.olive {
+    color: #3D9970; }
+
+.green {
+    color: #2ECC40; }
+
+.lime {
+    color: #01FF70; }
+
+.yellow {
+    color: #FFDC00; }
+
+.orange {
+    color: #FF851B; }
+
+.red {
+    color: #FF4136; }
+
+.fuchsia {
+    color: #F012BE; }
+
+.purple {
+    color: #B10DC9; }
+
+.maroon {
+    color: #85144B; }
+
+.white {
+    color: #fff; }
+
+.silver {
+    color: #ddd; }
+
+.gray {
+    color: #aaa; }
+
+.black {
+    color: #111; }

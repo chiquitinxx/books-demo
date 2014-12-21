@@ -1,0 +1,64 @@
+buildscript {
+    ext {
+        springBootVersion = '1.1.9.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
+        classpath 'org.grooscript:grooscript-gradle-plugin:0.9-SNAPSHOT'
+    }
+}
+
+//plugins {
+//  id "org.grooscript.conversion" version "0.8"
+//}
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+apply plugin: 'war'
+apply plugin: 'mongo'
+apply plugin: 'org.grooscript.conversion'
+
+war {
+    baseName = 'demo'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile("org.springframework.boot:spring-boot-starter-groovy-templates")
+    compile("org.codehaus.groovy:groovy")
+    compile("de.sven-jacobs:loremipsum:1.0")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
+
+templates {
+    templatesPath = 'src/main/resources/templates'
+    templates = ['index.tpl']
+    destinationPath = 'src/main/resources/static/js/app'
+    classPath = ['src/main/groovy']
+}
+
+bootRun.dependsOn startManagedMongoDb
