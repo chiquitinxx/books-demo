@@ -26,7 +26,7 @@ apply plugin: 'org.grooscript.conversion'
 
 war {
     baseName = 'demo'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.2-SNAPSHOT'
 }
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -60,18 +60,18 @@ grooscript {
     classPath = ['src/main/groovy']
 }
 
-templates {
+task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
     templatesPath = 'src/main/resources/templates'
     templates = ['bookList.gtpl']
-    destinationPath = 'src/main/resources/static/js/app'
+    destinationFile = 'src/main/resources/static/js/app/Templates.js'
     classPath = ['src/main/groovy']
 }
 
 task templateChanging(type: org.grooscript.gradle.UpdatesTask) {
-    files = ['src/main/resources/templates/index.tpl']
+    files = ['src/main/resources/templates', 'src/main/resources/static/css']
     onChanges = { list->
         websocketTo('http://localhost:8080/hello').data('YILA').via('/app/hello')
     }
 }
 
-bootRun.dependsOn startManagedMongoDb, templateChanging
+bootRun.dependsOn startManagedMongoDb, templateChanging, templatesListen

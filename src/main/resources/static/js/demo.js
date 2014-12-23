@@ -7,10 +7,15 @@ requirejs.config({
 });
 
 requirejs(['jquery', 'grooscript.min', 'grooscript-tools'], function($) {
-    requirejs(['app/gstemplates', 'app/Colorable', 'sockjs-0.3.4', 'stomp'], function() {
+    requirejs(['app/Templates', 'app/Colorable', 'sockjs-0.3.4', 'stomp'], function() {
+        var colors = Colorable();
+        $('.book').each(function() {
+            $( this ).removeClass('bg-white')
+            $( this ).addClass('bg-'+colors.randomColor());
+        });
         $(document).ready(function () {
             var socket = new SockJS('/hello');
-            stompClient = Stomp.over(socket);
+            var stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/reload', function(msg){
