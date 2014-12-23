@@ -43,9 +43,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile("org.springframework:spring-messaging")
     compile("org.springframework.boot:spring-boot-starter-groovy-templates")
     compile("org.codehaus.groovy:groovy")
-    compile("de.sven-jacobs:loremipsum:1.0")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
@@ -54,11 +54,24 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
 
+grooscript {
+    source = ['src/main/groovy/Colorable.groovy']
+    destination = 'src/main/resources/static/js/app'
+    classPath = ['src/main/groovy']
+}
+
 templates {
     templatesPath = 'src/main/resources/templates'
-    templates = ['index.tpl']
+    templates = ['bookList.gtpl']
     destinationPath = 'src/main/resources/static/js/app'
     classPath = ['src/main/groovy']
 }
 
-bootRun.dependsOn startManagedMongoDb
+task templateChanging(type: org.grooscript.gradle.UpdatesTask) {
+    files = ['src/main/resources/templates/index.tpl']
+    onChanges = { list->
+        websocketTo('http://localhost:8080/hello').data('YILA').via('/app/hello')
+    }
+}
+
+bootRun.dependsOn startManagedMongoDb, templateChanging

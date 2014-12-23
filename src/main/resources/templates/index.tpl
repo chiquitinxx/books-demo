@@ -10,17 +10,7 @@ html {
       h1 'Book Store'
     }
     section {
-      ul {
-        books.each { book ->
-          def color = demo.Colors.randomColor()
-          li(class: "bg-${color} book") {
-            h2 book.tittle
-            p book.id
-            p book.author
-            p book.description
-          }
-        }
-      }
+      include template: 'bookList.gtpl'
     }
   }
 }

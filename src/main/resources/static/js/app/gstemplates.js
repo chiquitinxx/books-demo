@@ -23,7 +23,7 @@ Templates.templates = gs.map().add("index.tpl",function(model) {
       gs.mc(Templates,"head",[function(it) {
         gs.mc(Templates,"title",["Book Store Demo"]);
         gs.mc(Templates,"link",[gs.map().add("rel","stylesheet").add("href","css/demo.css")]);
-        return gs.mc(Templates,"script",[gs.map().add("data-min","js/bookstore").add("src","js/lib/require.js"), function(it) {
+        return gs.mc(Templates,"script",[gs.map().add("data-main","js/demo").add("src","js/lib/require.js"), function(it) {
         }]);
       }]);
       return gs.mc(Templates,"body",[function(it) {
@@ -33,13 +33,7 @@ Templates.templates = gs.map().add("index.tpl",function(model) {
         return gs.mc(Templates,"section",[function(it) {
           return gs.mc(Templates,"ul",[function(it) {
             return gs.mc(gs.fs('books', this),"each",[function(book) {
-              var color = gs.mc(gs.gp(gs.fs('demo', this),"Colors"),"randomColor",[]);
-              return gs.mc(Templates,"li",[gs.map().add("class","bg-" + (color) + " book"), function(it) {
-                gs.mc(Templates,"h2",[gs.gp(book,"tittle")]);
-                gs.mc(Templates,"p",[gs.gp(book,"id")]);
-                gs.mc(Templates,"p",[gs.gp(book,"author")]);
-                return gs.mc(Templates,"p",[gs.gp(book,"description")]);
-              }]);
+              return gs.mc(Templates,"yieldUnescaped",[gs.execStatic(Templates,'applyTemplate', this,["bookList.gtpl", model])]);
             }]);
           }]);
         }]);
