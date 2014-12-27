@@ -23,13 +23,9 @@ class DemoController {
         return new ModelAndView("index", [books: bookingRepository.findAll()])
     }
 
-    //@SendTo("/topic/greetings")
-    @MessageMapping("/hello")
+    @MessageMapping("/reload")
     public void reload(String message) throws Exception {
-        //Thread.sleep(3000); // simulated delay
-        //return new Greeting("Hello, " + message.getName() + "!");
-        println '** Reload from ** '+message
-        template.convertAndSend('/topic/reload', 'templates')
+        template.convertAndSend('/topic/reload', message)
     }
 
     private initRepositoryIfEmpty() {

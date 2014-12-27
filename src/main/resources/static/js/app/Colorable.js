@@ -1,6 +1,6 @@
 function Colorable() {
   var gSobject = gs.inherit(gs.baseClass,'Colorable');
-  gSobject.clazz = { name: 'Colorable', simpleName: 'Colorable'};
+  gSobject.clazz = { name: 'component.Colorable', simpleName: 'Colorable'};
   gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
   gSobject.__defineGetter__('COLOR_CLASSES', function(){ return Colorable.COLOR_CLASSES; });
   gSobject.__defineSetter__('COLOR_CLASSES', function(gSval){ Colorable.COLOR_CLASSES = gSval; });

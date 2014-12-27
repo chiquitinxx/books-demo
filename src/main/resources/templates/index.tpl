@@ -8,6 +8,12 @@ html {
   body {
     header(class: 'bg-black') {
       h1 'Book Store'
+      p(id: 'actualTime') {
+        yield 'Time'
+      }
+    }
+    section (id: 'templates') {
+
     }
     section {
       include template: 'bookList.gtpl'

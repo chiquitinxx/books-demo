@@ -46,6 +46,7 @@ dependencies {
     compile("org.springframework:spring-messaging")
     compile("org.springframework.boot:spring-boot-starter-groovy-templates")
     compile("org.codehaus.groovy:groovy")
+    compile("org.grooscript:grooscript:0.6.3")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
@@ -55,7 +56,7 @@ task wrapper(type: Wrapper) {
 }
 
 grooscript {
-    source = ['src/main/groovy/Colorable.groovy']
+    source = ['src/main/groovy/component']
     destination = 'src/main/resources/static/js/app'
     classPath = ['src/main/groovy']
 }
@@ -70,7 +71,7 @@ task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
 task templateChanging(type: org.grooscript.gradle.UpdatesTask) {
     files = ['src/main/resources/templates', 'src/main/resources/static/css']
     onChanges = { list->
-        websocketTo('http://localhost:8080/hello').data('YILA').via('/app/hello')
+        websocketTo('http://localhost:8080/demo').data('templates').via('/app/reload')
     }
 }
 

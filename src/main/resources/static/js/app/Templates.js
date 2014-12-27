@@ -19,16 +19,13 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
   if (model === undefined) model = gs.map();
   return gs.mc(HtmlBuilder,"build",[function(it) {
     return gs.mc(Templates,"ul",[function(it) {
-      gs.mc(gs.fs('books', this),"each",[function(book) {
-        return gs.mc(Templates,"li",[gs.map().add("class","bg-white book"), function(it) {
+      return gs.mc(gs.fs('books', this),"each",[function(book) {
+        return gs.mc(Templates,"li",[gs.map().add("class","bg-purple book"), function(it) {
           gs.mc(Templates,"h2",[gs.gp(book,"tittle")]);
           gs.mc(Templates,"p",[gs.gp(book,"id")]);
-          gs.mc(Templates,"p",[gs.plus("Author/a: ", gs.gp(book,"author"))]);
+          gs.mc(Templates,"p",[gs.plus("Author's: ", gs.gp(book,"author"))]);
           return gs.mc(Templates,"p",[gs.gp(book,"description")]);
         }]);
-      }]);
-      return gs.mc(Templates,"li",[gs.map().add("class","bg-black book").add("onClick","console.log('Click!');"), function(it) {
-        return gs.mc(Templates,"h2",["Do something..."]);
       }]);
     }]);
   }]);
