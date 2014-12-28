@@ -11,7 +11,7 @@ function Templates() {
 };
 Templates.applyTemplate = function(name, model) {
   if (model === undefined) model = gs.map();
-  var cl = Templates.templates [ name];
+  var cl = Templates.templates[name];
   gs.sp(cl,"delegate",model);
   return (cl.delegate!=undefined?gs.applyDelegate(cl,cl.delegate,[model]):gs.execCall(cl, this, [model]));
 }

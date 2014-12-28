@@ -4,15 +4,15 @@ function HtmlBuilder() {
   gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
   gSobject.tagSolver = function(name, args) {
     gSobject.htmCd += "<" + (name) + "";
-    if ((((gs.bool(args)) && (gs.mc(args,"size",[]) > 0)) && (!gs.instanceOf((args [ 0]), "String"))) && (!gs.instanceOf((args [ 0]), "Closure"))) {
-      gs.mc(args [ 0],"each",[function(key, value) {
+    if ((((gs.bool(args)) && (gs.mc(args,"size",[]) > 0)) && (!gs.bool(gs.instanceOf((args[0]), "String")))) && (!gs.bool(gs.instanceOf((args[0]), "Closure")))) {
+      gs.mc(args[0],"each",[function(key, value) {
         return gSobject.htmCd += " " + (key) + "='" + (value) + "'";
       }]);
     };
     gSobject.htmCd += ">";
     if (gs.bool(args)) {
-      if ((gs.equals(gs.mc(args,"size",[]), 1)) && (gs.instanceOf((args [ 0]), "String"))) {
-        gs.mc(gSobject,"yield",[args [ 0]]);
+      if ((gs.equals(gs.mc(args,"size",[]), 1)) && (gs.instanceOf((args[0]), "String"))) {
+        gs.mc(gSobject,"yield",[args[0]]);
       } else {
         var lastArg = gs.mc(args,"last",[]);
         if (gs.instanceOf(lastArg, "Closure")) {
@@ -140,8 +140,10 @@ function Observable() {
   gSobject['processFunction'] = function(data, cl) {
     try {
       (cl.delegate!=undefined?gs.applyDelegate(cl,cl.delegate,[data]):gs.execCall(cl, this, [data]));
-    } catch (e) {
-    };
+    }
+    catch (e) {
+    }
+    ;
   }
   if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
   
@@ -373,4 +375,16 @@ function GQueryList() {
   
   return gSobject;
 };
+
+GQueryTrait = function() {};
+GQueryTrait.gSaT = function(target) {
+  GQueryTrait.$init$(target);
+  target.getgQuery = function(x0) { return GQueryTrait.getgQuery(target, x0); };
+  target.setgQuery = function(x0, x1) { return GQueryTrait.setgQuery(target, x0, x1); };
+};
+GQueryTrait.$init$ = function($self) {
+  return $self.org_grooscript_jquery_GQueryTrait__gQuery = GQueryImpl();
+}
+GQueryTrait.getgQuery = function($self) { return $self.org_grooscript_jquery_GQueryTrait__gQuery; }
+GQueryTrait.setgQuery = function($self, value) { $self.org_grooscript_jquery_GQueryTrait__gQuery = value; }
 

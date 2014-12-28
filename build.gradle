@@ -9,7 +9,10 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
-        classpath 'org.grooscript:grooscript-gradle-plugin:0.9-SNAPSHOT'
+        classpath('org.grooscript:grooscript-gradle-plugin:1.0.0-SNAPSHOT') {
+            exclude module: "groovy"
+            exclude module: "groovy-json"
+        }
     }
 }
 
@@ -32,6 +35,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -46,9 +50,17 @@ dependencies {
     compile("org.springframework:spring-messaging")
     compile("org.springframework.boot:spring-boot-starter-groovy-templates")
     compile("org.codehaus.groovy:groovy")
-    compile("org.grooscript:grooscript:0.6.3")
+    compile("org.grooscript:grooscript:1.0.0-SNAPSHOT") {
+        exclude module: "groovy"
+        exclude module: "groovy-json"
+    }
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile 'cglib:cglib-nodep:2.2'
+    testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude module: 'groovy-all'
+        exclude module: 'junit-dep'
+    }
 }
 
 task wrapper(type: Wrapper) {
@@ -56,7 +68,11 @@ task wrapper(type: Wrapper) {
 }
 
 grooscript {
-    source = ['src/main/groovy/component']
+    source = ['src/main/groovy/component/Colorable.groovy',
+              'src/main/groovy/component/StompClient.groovy',
+              'src/main/groovy/component/Visible.groovy',
+              'src/main/groovy/component/Counter.groovy'
+    ]
     destination = 'src/main/resources/static/js/app'
     classPath = ['src/main/groovy']
 }

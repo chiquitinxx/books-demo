@@ -4,7 +4,7 @@ function StompClient() {
   gSobject.clazz.superclass = { name: 'java.lang.Object', simpleName: 'Object'};
   gSobject.subscriptions = gs.map();
   gSobject['subscribe'] = function(path, closure) {
-    return (gSobject.subscriptions [ path]) = closure;
+    return (gSobject.subscriptions[path]) = closure;
   }
   gSobject.start = function(webSocketUrl) {
     var socket = new SockJS(webSocketUrl);
