@@ -7,8 +7,4 @@ trait Colorable {
             'navy','blue','aqua','teal','olive','green','lime','yellow', 'orange',
             'red','fuchsia','purple','gray','maroon'//,'silver','black'
     ]
-
-    String randomColor() {
-        COLOR_CLASSES[new Random().nextInt(COLOR_CLASSES.size())]
-    }
 }

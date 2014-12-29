@@ -91,4 +91,4 @@ task templateChanging(type: org.grooscript.gradle.UpdatesTask) {
     }
 }
 
-bootRun.dependsOn startManagedMongoDb, templateChanging, templatesListen
+bootRun.dependsOn startManagedMongoDb, templateChanging, templatesListen, thread

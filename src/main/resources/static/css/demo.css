@@ -27,6 +27,10 @@ header, section, footer {
     height: 200px;
 }
 
+.counter {
+    padding: 20px;
+}
+
 .book p {
     padding: 5px;
 }

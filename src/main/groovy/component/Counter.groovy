@@ -7,14 +7,18 @@ class Counter implements Visible, Colorable {
 
     def value
 
-    Counter(String selector) {
+    String randomColor() {
+        COLOR_CLASSES[new Random().nextInt(COLOR_CLASSES.size())]
+    }
+
+    Counter(String where) {
         value = 0
         html = {
             p(class: "bg-${randomColor()}") {
                 yieldUnescaped value.toString()
             }
         }
-        this.selector = selector
+        selector = where
         draw()
     }
 

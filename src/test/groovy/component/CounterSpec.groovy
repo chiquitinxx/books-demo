@@ -13,15 +13,15 @@ class CounterSpec extends Specification {
         expect:
         counter.randomColor()
         counter.selector == SELECTOR
-        counter.gQuery
+        counter.gquery
     }
 
     void 'draw html'() {
         given:
-        counter.selector = SELECTOR
         def closure = {
             p 'Hello!'
         }
+        counter.gquery = gQuery
         counter.html = closure
 
         when:
@@ -34,7 +34,7 @@ class CounterSpec extends Specification {
 
     void 'draw after inc'() {
         when:
-        counter.selector = SELECTOR
+        counter.gquery = gQuery
         counter.inc()
 
         then:

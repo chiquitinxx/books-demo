@@ -13,11 +13,7 @@ html {
       }
     }
     section (id: 'templates') {
-      ul {
-        li(class: 'book counter')
-        li(class: 'book')
-        li(class: 'book counter')
-      }
+      div(class: 'counter')
     }
     section {
       include template: 'bookList.gtpl'

@@ -10,13 +10,13 @@ function Counter() {
     gSobject.getProperty = function() { return Visible.getProperty(gSobject); }
   }
   gSobject.getSelector = function() { return Visible.getSelector(gSobject); }
-  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
   Visible.$init$(gSobject);
-  gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
-  gSobject.draw = function() { return Visible.draw(gSobject); }
-  gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
+  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
   gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
+  gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
+  gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
+  gSobject.draw = function() { return Visible.draw(gSobject); }
   if (Colorable['setProperty']) {
     gSobject.setProperty = function(x1) { return Colorable.setProperty(gSobject,x1); }
   }
@@ -24,22 +24,24 @@ function Counter() {
     gSobject.getProperty = function() { return Colorable.getProperty(gSobject); }
   }
   Colorable.$init$(gSobject);
-  gSobject.randomColor = function() { return Colorable.randomColor(gSobject); }
-  gSobject.getCOLOR_CLASSES = function() { return Colorable.getCOLOR_CLASSES(gSobject); }
-  gSobject.setCOLOR_CLASSES = function(x1) { return Colorable.setCOLOR_CLASSES(gSobject,x1); }
+  gSobject.getCOLOR_CLASSES = function() {  return Counter.COLOR_CLASSES };
+  gSobject.setCOLOR_CLASSES = function(x0) {  Counter.COLOR_CLASSES = x0 };
   gSobject.value = null;
+  gSobject['randomColor'] = function(it) {
+    return gSobject.getCOLOR_CLASSES()[gs.mc(gs.random(),"nextInt",[gs.mc(gSobject.getCOLOR_CLASSES(),"size",[])])];
+  }
   gSobject['inc'] = function(it) {
     gSobject.value++;
     return gs.mc(this,"draw",[], gSobject);
   }
-  gSobject['Counter1'] = function(selector) {
+  gSobject['Counter1'] = function(where) {
     gSobject.value = 0;
-    html = function(it) {
-      return gs.mc(this,"p",[gs.map().add("class","bg-" + (gs.mc(this,"randomColor",[], gSobject)) + ""), function(it) {
+    gSobject.setHtml(function(it) {
+      return gs.mc(this,"p",[gs.map().add("class","bg-" + (gs.mc(gSobject,"randomColor",[])) + ""), function(it) {
         return gs.mc(this,"yieldUnescaped",[gs.mc(gSobject.value,"toString",[])], gSobject);
       }], gSobject);
-    };
-    gs.sp(this,"selector",selector);
+    });
+    gSobject.setSelector(where);
     gs.mc(this,"draw",[], gSobject);
     return this;
   }
@@ -47,3 +49,4 @@ function Counter() {
   
   return gSobject;
 };
+Colorable$static$init$(Counter);
