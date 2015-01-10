@@ -17,6 +17,7 @@ class StompClient {
     def start(String webSocketUrl) {/*
         var socket = new SockJS(webSocketUrl);
         var stompClient = Stomp.over(socket);
+        stompClient.debug = null;
         stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
             gSobject.subscriptions.each(function (key, value) {
