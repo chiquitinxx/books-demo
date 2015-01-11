@@ -10,7 +10,7 @@ requirejs(['jquery', 'grooscript.min', 'grooscript-tools'], function($) {
     requirejs(['app/Templates', 'app/Colorable', 'sockjs-0.3.4', 'stomp',
         'app/StompClient', 'app/Visible', 'app/Counter'], function() {
         $(document).ready(function () {
-            var counter = Counter('.counter');
+            counter = Counter('#counter');
             var stompClient = StompClient();
             stompClient.subscribe('/topic/reload', function() { location.reload(); });
             stompClient.subscribe('/topic/time', function(msg) { $('#actualTime').text(msg); counter.inc(); });

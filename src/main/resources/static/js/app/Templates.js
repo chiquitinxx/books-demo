@@ -13,19 +13,14 @@ Templates.applyTemplate = function(name, model) {
   if (model === undefined) model = gs.map();
   var cl = Templates.templates[name];
   gs.sp(cl,"delegate",model);
-  return (cl.delegate!=undefined?gs.applyDelegate(cl,cl.delegate,[model]):gs.execCall(cl, this, [model]));
+  return gs.execCall(cl, this, [model]);
 }
-Templates.templates = gs.map().add("bookList.gtpl",function(model) {
+Templates.templates = gs.map().add("widgets.gtpl",function(model) {
   if (model === undefined) model = gs.map();
   return gs.mc(HtmlBuilder,"build",[function(it) {
-    return gs.mc(Templates,"ul",[function(it) {
-      return gs.mc(gs.fs('books', this),"each",[function(book) {
-        return gs.mc(Templates,"li",[gs.map().add("class","bg-purple book"), function(it) {
-          gs.mc(Templates,"h2",[gs.gp(book,"tittle")]);
-          gs.mc(Templates,"p",[gs.gp(book,"id")]);
-          gs.mc(Templates,"p",[gs.plus("Author's: ", gs.gp(book,"author"))]);
-          return gs.mc(Templates,"p",[gs.gp(book,"description")]);
-        }]);
+    return gs.mc(Templates,"ul",[gs.map().add("class","row"), function(it) {
+      return gs.mc(Templates,"li",[gs.map().add("class","small-12 medium-6 large-4 columns").add("id","counter"), function(it) {
+        return gs.mc(Templates,"yield",["0"]);
       }]);
     }]);
   }]);

@@ -10,12 +10,12 @@ function Counter() {
     gSobject.getProperty = function() { return Visible.getProperty(gSobject); }
   }
   gSobject.getSelector = function() { return Visible.getSelector(gSobject); }
-  Visible.$init$(gSobject);
   gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
-  gSobject.draw = function() { return Visible.draw(gSobject); }
+  Visible.$init$(gSobject);
   gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
   gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
+  gSobject.draw = function() { return Visible.draw(gSobject); }
   gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
   if (Colorable['setProperty']) {
     gSobject.setProperty = function(x1) { return Colorable.setProperty(gSobject,x1); }
@@ -32,17 +32,24 @@ function Counter() {
   }
   gSobject['inc'] = function(it) {
     gSobject.value++;
+    return gs.mc(gs.execCall(gSobject.getGquery(), this, [".counter em"]),"text",[gSobject.value]);
+  }
+  gSobject['reset'] = function(it) {
+    gSobject.value = 0;
     return gs.mc(this,"draw",[], gSobject);
   }
   gSobject['Counter1'] = function(where) {
-    gSobject.value = 0;
     gSobject.setHtml(function(it) {
-      return gs.mc(this,"p",[gs.map().add("class","bg-" + (gs.mc(gSobject,"randomColor",[])) + ""), function(it) {
-        return gs.mc(this,"yieldUnescaped",[gs.mc(gSobject.value,"toString",[])], gSobject);
+      return gs.mc(this,"div",[gs.map().add("class","counter bg-" + (gs.mc(gSobject,"randomColor",[])) + ""), function(it) {
+        gs.mc(this,"p",["Counter"], gSobject);
+        gs.mc(this,"em",[gs.mc(gSobject.value,"toString",[])], gSobject);
+        return gs.mc(this,"a",[gs.map().add("href","#").add("class","button small secondary").add("onclick","counter.reset()"), function(it) {
+          return gs.mc(this,"yield",["Reset"], gSobject);
+        }], gSobject);
       }], gSobject);
     });
     gSobject.setSelector(where);
-    gs.mc(this,"draw",[], gSobject);
+    gs.mc(gSobject,"reset",[]);
     return this;
   }
   if (arguments.length==1) {gSobject.Counter1(arguments[0]); }

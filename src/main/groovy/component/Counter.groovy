@@ -12,18 +12,26 @@ class Counter implements Visible, Colorable {
     }
 
     Counter(String where) {
-        value = 0
         html = {
-            p(class: "bg-${randomColor()}") {
-                yieldUnescaped value.toString()
+            div(class: "counter bg-${randomColor()}") {
+                p 'Counter'
+                em value.toString()
+                a(href:"#", class:"button small secondary", onclick: 'counter.reset()') {
+                    yield 'Reset'
+                }
             }
         }
         selector = where
-        draw()
+        reset()
     }
 
     def inc() {
         value++
+        gquery.call('.counter em').text value
+    }
+
+    def reset() {
+        value = 0
         draw()
     }
 }
