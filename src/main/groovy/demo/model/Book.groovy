@@ -5,7 +5,8 @@ package demo.model
  */
 class Book {
     BigInteger id
-    String tittle
+    String title
     String author
     String description
+    int year
 }

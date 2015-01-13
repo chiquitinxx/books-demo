@@ -18,9 +18,15 @@ Templates.applyTemplate = function(name, model) {
 Templates.templates = gs.map().add("widgets.gtpl",function(model) {
   if (model === undefined) model = gs.map();
   return gs.mc(HtmlBuilder,"build",[function(it) {
-    return gs.mc(Templates,"ul",[gs.map().add("class","row"), function(it) {
-      return gs.mc(Templates,"li",[gs.map().add("class","small-12 medium-6 large-4 columns").add("id","counter"), function(it) {
-        return gs.mc(Templates,"yield",["0"]);
+    return gs.mc(Templates,"div",[gs.map().add("class","row"), function(it) {
+      gs.mc(Templates,"div",[gs.map().add("class","small-12 medium-6 large-4 columns gridWidget").add("id","counter"), function(it) {
+      }]);
+      return gs.mc(Templates,"div",[gs.map().add("class","small-12 medium-6 large-4 columns gridWidget"), function(it) {
+        return gs.mc(Templates,"div",[gs.map().add("class","bg-red widget"), function(it) {
+          gs.mc(Templates,"p",["Last book"]);
+          gs.mc(Templates,"h3",[gs.gp(gs.fs('last', this),"title")]);
+          return gs.mc(Templates,"p",[gs.gp(gs.fs('last', this),"year")]);
+        }]);
       }]);
     }]);
   }]);

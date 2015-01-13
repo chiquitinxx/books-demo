@@ -11,27 +11,23 @@ class Counter implements Visible, Colorable {
         COLOR_CLASSES[new Random().nextInt(COLOR_CLASSES.size())]
     }
 
-    Counter(String where) {
+    Counter(String where, numberValue) {
+        value = numberValue
         html = {
-            div(class: "counter bg-${randomColor()}") {
-                p 'Counter'
-                em value.toString()
-                a(href:"#", class:"button small secondary", onclick: 'counter.reset()') {
-                    yield 'Reset'
+            div(class: "widget bg-${randomColor()}") {
+                p 'Number of books'
+                em numberValue
+                a(href:"#", class:"button small secondary") {
+                    yield 'Show'
                 }
             }
         }
         selector = where
-        reset()
+        draw()
     }
 
     def inc() {
         value++
         gquery.call('.counter em').text value
-    }
-
-    def reset() {
-        value = 0
-        draw()
     }
 }

@@ -7,10 +7,6 @@ h1, h2, h3 {
     color: #fff;
 }
 
-ul {
-    list-style-type: none;
-}
-
 body, h1, h2, h3, .button {
     font-family: 'Cabin', sans-serif;
     font-style: normal;
@@ -27,20 +23,24 @@ header {
     text-align: center;
 }
 
-.counter {
-    margin: 10px;
-    height: 200px;
-    text-align: center;
-    padding: 20px;
+.gridWidget {
+    padding: 0px;
 }
 
-.counter p {
+.widget {
+    padding: 15px;
+    margin: 5px;
+    height: 200px;
+    text-align: center;
+}
+
+#counter p {
     font-size: 2em;
 }
 
-.counter a {
+#counter a {
     position: absolute;
-    right: 40px;
+    right: 20px;
     bottom: 0px;
 }
 
