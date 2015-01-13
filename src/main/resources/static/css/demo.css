@@ -44,6 +44,25 @@ header {
     bottom: 0px;
 }
 
+.bookList {
+    color: #111;
+}
+
+.bookList table {
+    width: 100%;
+}
+
+.search {
+    padding-top: 10px;
+    text-align: center;
+}
+
+.search input {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 50%;
+}
+
 /***
    colors.css v2.0.0
    http://clrs.cc

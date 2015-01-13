@@ -10,13 +10,13 @@ function Counter() {
     gSobject.getProperty = function() { return Visible.getProperty(gSobject); }
   }
   gSobject.getSelector = function() { return Visible.getSelector(gSobject); }
-  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
-  Visible.$init$(gSobject);
+  gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
+  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   gSobject.draw = function() { return Visible.draw(gSobject); }
+  Visible.$init$(gSobject);
+  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
   gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
   gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
-  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
-  gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
   if (Colorable['setProperty']) {
     gSobject.setProperty = function(x1) { return Colorable.setProperty(gSobject,x1); }
   }
@@ -24,15 +24,15 @@ function Counter() {
     gSobject.getProperty = function() { return Colorable.getProperty(gSobject); }
   }
   Colorable.$init$(gSobject);
-  gSobject.getCOLOR_CLASSES = function() {  return Counter.COLOR_CLASSES };
   gSobject.setCOLOR_CLASSES = function(x0) {  Counter.COLOR_CLASSES = x0 };
+  gSobject.getCOLOR_CLASSES = function() {  return Counter.COLOR_CLASSES };
   gSobject.value = null;
   gSobject['randomColor'] = function(it) {
     return gSobject.getCOLOR_CLASSES()[gs.mc(gs.random(),"nextInt",[gs.mc(gSobject.getCOLOR_CLASSES(),"size",[])])];
   }
-  gSobject['inc'] = function(it) {
-    gSobject.value++;
-    return gs.mc(gs.execCall(gSobject.getGquery(), this, [".counter em"]),"text",[gSobject.value]);
+  gSobject['setValue'] = function(newValue) {
+    gSobject.value = newValue;
+    return gs.mc(gs.execCall(gSobject.getGquery(), this, ["#counter em"]),"text",[gSobject.value]);
   }
   gSobject['Counter2'] = function(where, numberValue) {
     gSobject.value = numberValue;
@@ -40,7 +40,7 @@ function Counter() {
       return gs.mc(this,"div",[gs.map().add("class","widget bg-" + (gs.mc(gSobject,"randomColor",[])) + ""), function(it) {
         gs.mc(this,"p",["Number of books"], gSobject);
         gs.mc(this,"em",[numberValue], gSobject);
-        return gs.mc(this,"a",[gs.map().add("href","#").add("class","button small secondary"), function(it) {
+        return gs.mc(this,"a",[gs.map().add("href","#").add("class","button small secondary").add("onclick","bookPresenter.showBooks()"), function(it) {
           return gs.mc(this,"yield",["Show"], gSobject);
         }], gSobject);
       }], gSobject);

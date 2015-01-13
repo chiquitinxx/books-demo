@@ -17,7 +17,7 @@ class Counter implements Visible, Colorable {
             div(class: "widget bg-${randomColor()}") {
                 p 'Number of books'
                 em numberValue
-                a(href:"#", class:"button small secondary") {
+                a(href:"#", class:"button small secondary", onclick: 'bookPresenter.showBooks()') {
                     yield 'Show'
                 }
             }
@@ -26,8 +26,8 @@ class Counter implements Visible, Colorable {
         draw()
     }
 
-    def inc() {
-        value++
-        gquery.call('.counter em').text value
+    def setValue(newValue) {
+        value = newValue
+        gquery.call('#counter em').text value
     }
 }

@@ -17,6 +17,7 @@ html {
         yield 'Time'
       }
     }
+    div(class: 'bookList') {}
     section {
       include template: 'widgets.gtpl'
     }

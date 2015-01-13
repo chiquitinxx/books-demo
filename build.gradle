@@ -68,27 +68,23 @@ task wrapper(type: Wrapper) {
 }
 
 grooscript {
-    source = ['src/main/groovy/component/Colorable.groovy',
-              'src/main/groovy/component/StompClient.groovy',
-              'src/main/groovy/component/Visible.groovy',
-              'src/main/groovy/component/Counter.groovy'
-    ]
+    source = ['src/main/groovy/component']
     destination = 'src/main/resources/static/js/app'
     classPath = ['src/main/groovy']
 }
 
 task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
     templatesPath = 'src/main/resources/templates'
-    templates = ['widgets.gtpl']
+    templates = ['widgets.gtpl', 'bookList.gtpl', 'bookTable.gtpl']
     destinationFile = 'src/main/resources/static/js/app/Templates.js'
     classPath = ['src/main/groovy']
 }
 
 spy {
-    files = ['src/main/resources/templates', 'src/main/resources/static/css']
+    files = ['src/main/resources/templates', 'src/main/resources/static/css', 'src/main/resources/static/js/app']
     onChanges = { list ->
         springWebsocketTo 'http://localhost:8080/demo' data 'templates' onChannel '/app/reload'
     }
 }
 
-bootRun.dependsOn startManagedMongoDb, templatesListen, spyChanges, thread
+bootRun.dependsOn startManagedMongoDb, templatesListen, thread, spyChanges
