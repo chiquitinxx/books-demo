@@ -17,7 +17,7 @@ function HtmlBuilder() {
         var lastArg = gs.mc(args,"last",[]);
         if (gs.instanceOf(lastArg, "Closure")) {
           gs.sp(lastArg,"delegate",this);
-          (lastArg.delegate!=undefined?gs.applyDelegate(lastArg,lastArg.delegate,[]):gs.execCall(lastArg, this, []));
+          gs.execCall(lastArg, this, []);
         };
         if ((gs.instanceOf(lastArg, "String")) && (gs.mc(args,"size",[]) > 1)) {
           gs.mc(gSobject,"yield",[lastArg]);
@@ -31,19 +31,19 @@ function HtmlBuilder() {
   gSobject['yield'] = function(text) {
     return gs.mc(text,"each",[function(ch) {
       var gSswitch0 = ch;
-      if (gSswitch0 === "&") {
+      if (gs.equals(gSswitch0, "&")) {
         gSobject.htmCd += "&amp;";
         ;
-      } else if (gSswitch0 === "<") {
+      } else if (gs.equals(gSswitch0, "<")) {
         gSobject.htmCd += "&lt;";
         ;
-      } else if (gSswitch0 === ">") {
+      } else if (gs.equals(gSswitch0, ">")) {
         gSobject.htmCd += "&gt;";
         ;
-      } else if (gSswitch0 === "\"") {
+      } else if (gs.equals(gSswitch0, "\"")) {
         gSobject.htmCd += "&quot;";
         ;
-      } else if (gSswitch0 === "'") {
+      } else if (gs.equals(gSswitch0, "'")) {
         gSobject.htmCd += "&apos;";
         ;
       } else {
@@ -91,7 +91,7 @@ HtmlBuilder.build = function(closure) {
   var builder = HtmlBuilder();
   gs.sp(builder,"metaClass",mc);
   gs.sp(closure,"delegate",builder);
-  (closure.delegate!=undefined?gs.applyDelegate(closure,closure.delegate,[]):gs.execCall(closure, this, []));
+  gs.execCall(closure, this, []);
   return gs.gp(builder,"htmCd");
 }
 
@@ -115,7 +115,7 @@ function Observable() {
   }
   gSobject['filter'] = function(cl) {
     gs.mc(gSobject.chain,'leftShift', gs.list([function(it) {
-      if ((cl.delegate!=undefined?gs.applyDelegate(cl,cl.delegate,[it]):gs.execCall(cl, this, [it]))) {
+      if (gs.execCall(cl, this, [it])) {
         return it;
       } else {
         throw "Exception";
@@ -139,7 +139,7 @@ function Observable() {
   }
   gSobject['processFunction'] = function(data, cl) {
     try {
-      (cl.delegate!=undefined?gs.applyDelegate(cl,cl.delegate,[data]):gs.execCall(cl, this, [data]));
+      gs.execCall(cl, this, [data]);
     }
     catch (e) {
     }
@@ -343,7 +343,7 @@ function GQueryImpl() {
   gSobject['observeEvent'] = function(selector, nameEvent, data) {
     if (data === undefined) data = gs.map();
     var observable = gs.execStatic(Observable,'listen', this,[]);
-    gs.mc((this.delegate!=undefined?gs.applyDelegate(this,this.delegate,[selector]):gs.execCall(this, this, [selector])),"on",[nameEvent, data, function(event) {
+    gs.mc(gs.execCall(this, this, [selector]),"on",[nameEvent, data, function(event) {
       return gs.mc(observable,"produce",[event]);
     }]);
     return observable;
@@ -375,16 +375,4 @@ function GQueryList() {
   
   return gSobject;
 };
-
-GQueryTrait = function() {};
-GQueryTrait.gSaT = function(target) {
-  GQueryTrait.$init$(target);
-  target.getgQuery = function(x0) { return GQueryTrait.getgQuery(target, x0); };
-  target.setgQuery = function(x0, x1) { return GQueryTrait.setgQuery(target, x0, x1); };
-};
-GQueryTrait.$init$ = function($self) {
-  return $self.org_grooscript_jquery_GQueryTrait__gQuery = GQueryImpl();
-}
-GQueryTrait.getgQuery = function($self) { return $self.org_grooscript_jquery_GQueryTrait__gQuery; }
-GQueryTrait.setgQuery = function($self, value) { $self.org_grooscript_jquery_GQueryTrait__gQuery = value; }
 
