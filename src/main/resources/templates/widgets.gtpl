@@ -8,4 +8,7 @@ div(class: 'row') {
       p last.year
     }
   }
+  div(class: "small-12 medium-6 large-4 columns") {
+    div(class: 'ct-chart ct-perfect-fourth')
+  }
 }

@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.1.9.RELEASE'
+        springBootVersion = '1.2.1.RELEASE'
     }
     repositories {
         mavenLocal()
@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
-        classpath('org.grooscript:grooscript-gradle-plugin:1.0.0-SNAPSHOT') {
+        classpath('org.grooscript:grooscript-gradle-plugin:0.10-SNAPSHOT') {
             exclude module: "groovy"
             exclude module: "groovy-json"
         }

@@ -7,7 +7,9 @@ html {
     link(rel: 'stylesheet', href: 'css/normalize.css')
     link(rel: 'stylesheet', href: 'css/foundation.css')
     link(href: 'http://fonts.googleapis.com/css?family=Cabin', rel:'stylesheet', type: 'text/css')
+    link(rel: 'stylesheet', href: 'css/chartist.min.css')
     link(rel: 'stylesheet', href: 'css/demo.css')
+    script(src: 'js/lib/chartist.min.js') {}
     script('data-main': 'js/demo', src: 'js/lib/require.js') {}
   }
   body {

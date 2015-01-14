@@ -8,7 +8,7 @@ import org.grooscript.templates.Templates
 /**
  * Created by jorgefrancoleza on 13/1/15.
  */
-class BookPresenter {
+class BookPresenter implements Chart {
 
     List<Book> books
     String urlBooks
@@ -20,6 +20,7 @@ class BookPresenter {
         gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
             books = listBooks
             counter.value = books.size()
+            drawPie()
         }, { msg ->
             println 'Error initBooks:'+msg
         })
@@ -40,5 +41,16 @@ class BookPresenter {
 
     def close() {
         gQuery(booksListSelector).html ''
+    }
+
+    private drawPie() {
+        def groups = books.
+            sort(false) { it.year }.
+            groupBy { it.year }
+        def data = [
+            labels: groups.collect { it.key }.reverse(),
+            series: groups.collect { it.value.size() }.reverse()
+        ]
+        pieChart('.ct-chart', data);
     }
 }

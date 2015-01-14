@@ -9,14 +9,14 @@ function Counter() {
   if (Visible['getProperty']) {
     gSobject.getProperty = function() { return Visible.getProperty(gSobject); }
   }
-  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
-  gSobject.draw = function() { return Visible.draw(gSobject); }
-  gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
-  gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
-  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
-  gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
   Visible.$init$(gSobject);
   gSobject.getSelector = function() { return Visible.getSelector(gSobject); }
+  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
+  gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
+  gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
+  gSobject.draw = function() { return Visible.draw(gSobject); }
+  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
+  gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
   if (Colorable['setProperty']) {
     gSobject.setProperty = function(x1) { return Colorable.setProperty(gSobject,x1); }
   }

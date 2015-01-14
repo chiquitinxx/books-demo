@@ -7,6 +7,5 @@ class Book {
     BigInteger id
     String title
     String author
-    String description
     int year
 }

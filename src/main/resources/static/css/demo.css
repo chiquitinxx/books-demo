@@ -63,6 +63,44 @@ header {
     width: 50%;
 }
 
+.search p {
+    margin-bottom: 5px;
+}
+
+.search .button {
+    margin: 0px;
+}
+
+.tableSearch {
+    padding: 0px 10px;
+}
+
+.ct-chart .ct-series.ct-series-a .ct-area,.ct-chart .ct-series.ct-series-a .ct-slice:not(.ct-donut){
+    fill:#0074D9
+}
+.ct-chart .ct-series.ct-series-b .ct-area,.ct-chart .ct-series.ct-series-b .ct-slice:not(.ct-donut){
+    fill:#F012BE
+}
+.ct-chart .ct-series.ct-series-c .ct-area,.ct-chart .ct-series.ct-series-c .ct-slice:not(.ct-donut){
+    fill:#85144B
+}
+.ct-chart .ct-series.ct-series-d .ct-area,.ct-chart .ct-series.ct-series-d .ct-slice:not(.ct-donut){
+    fill:#39CCCC
+}
+.ct-chart .ct-series.ct-series-e .ct-area,.ct-chart .ct-series.ct-series-e .ct-slice:not(.ct-donut){
+    fill:#2ECC40
+}
+.ct-chart .ct-series.ct-series-f .ct-area,.ct-chart .ct-series.ct-series-f .ct-slice:not(.ct-donut){
+    fill:#B10DC9
+}
+.ct-chart .ct-series.ct-series-g .ct-area,.ct-chart .ct-series.ct-series-g .ct-slice:not(.ct-donut){
+    fill:#FF4136
+}
+
+.ct-chart .ct-label, .ct-chart .ct-label.ct-horizontal {
+    fill: #ffffff;
+}
+
 /***
    colors.css v2.0.0
    http://clrs.cc

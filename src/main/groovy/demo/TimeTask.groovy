@@ -18,6 +18,6 @@ class TimeTask {
 
     @Scheduled(fixedRate = 1000L)
     public void reportCurrentTime() {
-        template.convertAndSend '/topic/time', new Date().format('HH:mm:ss')
+        template.convertAndSend '/topic/time', [date: new Date().format('HH:mm:ss')]
     }
 }
