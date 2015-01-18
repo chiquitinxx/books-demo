@@ -73,9 +73,15 @@ grooscript {
     classPath = ['src/main/groovy']
 }
 
+task bookConvertThread(type: org.grooscript.gradle.ThreadTask) {
+    source = ['src/main/groovy/demo/model/Book.groovy']
+    destination = 'src/main/resources/static/js/app'
+    classPath = ['src/main/groovy']
+}
+
 task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
     templatesPath = 'src/main/resources/templates'
-    templates = ['widgets.gtpl', 'bookList.gtpl', 'bookTable.gtpl']
+    templates = ['bookList.gtpl', 'bookTable.gtpl', 'lastBook.gtpl']
     destinationFile = 'src/main/resources/static/js/app/Templates.js'
     classPath = ['src/main/groovy']
 }
@@ -87,4 +93,5 @@ spy {
     }
 }
 
-bootRun.dependsOn startManagedMongoDb, templatesListen, thread, spyChanges
+spyChanges.dependsOn templatesListen, thread, bookConvertThread
+bootRun.dependsOn startManagedMongoDb, spyChanges

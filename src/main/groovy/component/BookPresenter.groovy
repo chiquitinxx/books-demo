@@ -15,18 +15,34 @@ class BookPresenter implements Chart {
     String booksListSelector
     Counter counter
     GQuery gQuery = new GQueryImpl()
+    String title
+    String author
+    String year
 
-    def initBooks() {
-        gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
-            books = listBooks
-            counter.value = books.size()
-            drawPie()
-        }, { msg ->
-            println 'Error initBooks:'+msg
-        })
+    void init() {
+        bindNewBook()
+        clearNewBook()
+        initBooks()
     }
 
-    def showBooks() {
+    void addBookToServer() {
+        Book book = new Book(author: author, title: title, year: Integer.parseInt(year))
+        if (book.validate()) {
+            gQuery.doRemoteCall('/addBook', 'POST', book, { data ->
+                if (data.result == 'OK') {
+                    clearNewBook()
+                } else {
+                    println "Validation error adding book."
+                }
+            }, { error ->
+                println "Server error adding book: ${error}"
+            })
+        } else {
+            println 'Validation not passed!'
+        }
+    }
+
+    void showBooks() {
         if (books) {
             def data = [listBooks: books, searchString: '']
             gQuery(booksListSelector).html Templates.applyTemplate('bookList.gtpl', data)
@@ -34,13 +50,45 @@ class BookPresenter implements Chart {
         }
     }
 
-    def changeSearch(searchText) {
+    void changeSearch(searchText) {
         def data = [listBooks: books, searchString: searchText]
         gQuery('.tableSearch').html Templates.applyTemplate('bookTable.gtpl', data)
     }
 
-    def close() {
+    void hideBooks() {
         gQuery(booksListSelector).html ''
+    }
+
+    void clearNewBook() {
+        setAuthor('')
+        setTitle('')
+        setYear('')
+    }
+
+    void newBookFromServer(Book book) {
+        books << book
+        updateBooksNumber()
+        updateLastBook(book)
+        drawPie()
+    }
+
+    private bindNewBook() {
+        gQuery.bindAllProperties(this)
+        gQuery.onEvent('#addNewBook', 'click', this.&addBookToServer)
+    }
+
+    private initBooks() {
+        gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
+            books = listBooks
+            updateBooksNumber()
+            drawPie()
+        }, { msg ->
+            println 'Error initBooks:'+msg
+        })
+    }
+
+    private updateBooksNumber() {
+        counter.value = books.size()
     }
 
     private drawPie() {
@@ -52,5 +100,9 @@ class BookPresenter implements Chart {
             series: groups.collect { it.value.size() }.reverse()
         ]
         pieChart('.ct-chart', data);
+    }
+
+    private updateLastBook(Book book) {
+        gQuery('#lastBook').html Templates.applyTemplate('lastBook.gtpl', [last: book])
     }
 }

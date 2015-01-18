@@ -41,7 +41,7 @@ header {
 #counter a {
     position: absolute;
     right: 20px;
-    bottom: 0px;
+    bottom: 0;
 }
 
 .bookList {
@@ -73,6 +73,26 @@ header {
 
 .tableSearch {
     padding: 0px 10px;
+}
+
+#newBook input {
+    color: #000000;
+    width: 100%;
+}
+
+#newBook a {
+    padding: 15px;
+    margin: 2px;
+}
+
+#newBook .row {
+    padding-top: 5px;
+}
+
+#newBook h3 {
+    padding: 0;
+    margin: 0;
+    text-align: center;
 }
 
 .ct-chart .ct-series.ct-series-a .ct-area,.ct-chart .ct-series.ct-series-a .ct-slice:not(.ct-donut){
