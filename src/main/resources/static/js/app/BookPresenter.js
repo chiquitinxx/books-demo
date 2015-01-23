@@ -9,8 +9,8 @@ function BookPresenter() {
   if (Chart['getProperty']) {
     gSobject.getProperty = function() { return Chart.getProperty(gSobject); }
   }
-  gSobject.pieChart = function(x1,x2) { return Chart.pieChart(gSobject,x1,x2); }
   Chart.$init$(gSobject);
+  gSobject.pieChart = function(x1,x2) { return Chart.pieChart(gSobject,x1,x2); }
   gSobject.books = null;
   gSobject.urlBooks = null;
   gSobject.booksListSelector = null;
