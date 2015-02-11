@@ -9,14 +9,10 @@ function Counter() {
   if (Visible['getProperty']) {
     gSobject.getProperty = function() { return Visible.getProperty(gSobject); }
   }
-  gSobject.getSelector = function() { return Visible.getSelector(gSobject); }
   Visible.$init$(gSobject);
-  gSobject.getHtml = function() { return Visible.getHtml(gSobject); }
-  gSobject.setSelector = function(x1) { return Visible.setSelector(gSobject,x1); }
-  gSobject.setHtml = function(x1) { return Visible.setHtml(gSobject,x1); }
-  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
-  gSobject.draw = function() { return Visible.draw(gSobject); }
+  gSobject.draw = function(x1,x2) { return Visible.draw(gSobject,x1,x2); }
+  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   if (Colorable['setProperty']) {
     gSobject.setProperty = function(x1) { return Colorable.setProperty(gSobject,x1); }
   }
@@ -24,29 +20,23 @@ function Counter() {
     gSobject.getProperty = function() { return Colorable.getProperty(gSobject); }
   }
   Colorable.$init$(gSobject);
-  gSobject.setCOLOR_CLASSES = function(x0) {  Counter.COLOR_CLASSES = x0 };
-  gSobject.getCOLOR_CLASSES = function() {  return Counter.COLOR_CLASSES };
-  gSobject.value = null;
-  gSobject['randomColor'] = function(it) {
-    return gSobject.getCOLOR_CLASSES()[gs.mc(gs.random(),"nextInt",[gs.mc(gSobject.getCOLOR_CLASSES(),"size",[])])];
-  }
+  gSobject.getColorClasses = function() { return Colorable.getColorClasses(gSobject); }
+  gSobject.setColorClasses = function(x1) { return Colorable.setColorClasses(gSobject,x1); }
+  gSobject.randomColor = function() { return Colorable.randomColor(gSobject); }
   gSobject['setValue'] = function(newValue) {
-    gSobject.value = newValue;
-    return gs.mc(gs.execCall(gSobject.getGquery(), this, ["#counter em"]),"text",[gSobject.value]);
+    return gs.mc(gs.execCall(gSobject.getGquery(), this, ["#counter em"]),"text",[newValue]);
   }
   gSobject['Counter2'] = function(where, numberValue) {
-    gSobject.value = numberValue;
-    gSobject.setHtml(function(it) {
-      return gs.mc(this,"div",[gs.map().add("class","widget bg-" + (gs.mc(gSobject,"randomColor",[])) + ""), function(it) {
+    var html = function(it) {
+      return gs.mc(this,"div",[gs.map().add("class","widget bg-" + (gs.mc(this,"randomColor",[], gSobject)) + ""), function(it) {
         gs.mc(this,"p",["Number of books"], gSobject);
-        gs.mc(this,"em",[numberValue], gSobject);
+        gs.mc(this,"em",[gs.mc(numberValue,"toString",[])], gSobject);
         return gs.mc(this,"a",[gs.map().add("href","#").add("class","button small secondary").add("onclick","bookPresenter.showBooks()"), function(it) {
           return gs.mc(this,"yield",["Show"], gSobject);
         }], gSobject);
       }], gSobject);
-    });
-    gSobject.setSelector(where);
-    gs.mc(this,"draw",[], gSobject);
+    };
+    gs.mc(this,"draw",[html, where], gSobject);
     return this;
   }
   if (arguments.length==2) {gSobject.Counter2(arguments[0], arguments[1]); }
@@ -54,4 +44,3 @@ function Counter() {
   
   return gSobject;
 };
-Colorable$static$init$(Counter);

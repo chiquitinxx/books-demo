@@ -92,9 +92,8 @@ class BookPresenter implements Chart {
     }
 
     private drawPie() {
-        def groups = books.
-            sort(false) { it.year }.
-            groupBy { it.year }
+        def groups = books.sort(false) { it.year }.
+                           groupBy { it.year }
         def data = [
             labels: groups.collect { it.key }.reverse(),
             series: groups.collect { it.value.size() }.reverse()
