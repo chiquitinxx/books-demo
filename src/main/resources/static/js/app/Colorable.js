@@ -8,6 +8,9 @@ Colorable.gSaT = function(target) {
 Colorable.$init$ = function($self) {
   return $self.component_Colorable__colorClasses = gs.list(["navy" , "blue" , "aqua" , "teal" , "olive" , "green" , "lime" , "yellow" , "orange" , "red" , "fuchsia" , "purple" , "gray" , "maroon"]);
 }
+function Colorable$static$init$($static$self){
+  
+};
 Colorable.randomColor = function($self) {
   return $self.component_Colorable__colorClasses[gs.mc(gs.random(),"nextInt",[gs.mc($self.component_Colorable__colorClasses,"size",[])])];
 }

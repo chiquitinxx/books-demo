@@ -10,9 +10,9 @@ function Counter() {
     gSobject.getProperty = function() { return Visible.getProperty(gSobject); }
   }
   Visible.$init$(gSobject);
+  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   gSobject.setGquery = function(x1) { return Visible.setGquery(gSobject,x1); }
   gSobject.draw = function(x1,x2) { return Visible.draw(gSobject,x1,x2); }
-  gSobject.getGquery = function() { return Visible.getGquery(gSobject); }
   if (Colorable['setProperty']) {
     gSobject.setProperty = function(x1) { return Colorable.setProperty(gSobject,x1); }
   }
@@ -20,13 +20,11 @@ function Counter() {
     gSobject.getProperty = function() { return Colorable.getProperty(gSobject); }
   }
   Colorable.$init$(gSobject);
-  gSobject.getColorClasses = function() { return Colorable.getColorClasses(gSobject); }
   gSobject.setColorClasses = function(x1) { return Colorable.setColorClasses(gSobject,x1); }
   gSobject.randomColor = function() { return Colorable.randomColor(gSobject); }
-  gSobject['setValue'] = function(newValue) {
-    return gs.mc(gs.execCall(gSobject.getGquery(), this, ["#counter em"]),"text",[newValue]);
-  }
-  gSobject['Counter2'] = function(where, numberValue) {
+  gSobject.getColorClasses = function() { return Colorable.getColorClasses(gSobject); }
+  gSobject.selector = null;
+  gSobject['init'] = function(numberValue) {
     var html = function(it) {
       return gs.mc(this,"div",[gs.map().add("class","widget bg-" + (gs.mc(this,"randomColor",[], gSobject)) + ""), function(it) {
         gs.mc(this,"p",["Number of books"], gSobject);
@@ -36,11 +34,16 @@ function Counter() {
         }], gSobject);
       }], gSobject);
     };
-    gs.mc(this,"draw",[html, where], gSobject);
+    return gs.mc(this,"draw",[html, gSobject.selector], gSobject);
+  }
+  gSobject['setValue'] = function(newValue) {
+    return gs.mc(gs.execCall(gSobject.getGquery(), this, ["#counter em"]),"text",[newValue]);
+  }
+  gSobject['Counter1'] = function(where) {
+    gSobject.selector = where;
     return this;
   }
-  if (arguments.length==2) {gSobject.Counter2(arguments[0], arguments[1]); }
-  if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
+  if (arguments.length==1) {gSobject.Counter1(arguments[0]); }
   
   return gSobject;
 };

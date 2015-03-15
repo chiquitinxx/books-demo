@@ -5,7 +5,13 @@ package component
  */
 class Counter implements Visible, Colorable {
 
-    Counter(String where, numberValue) {
+    String selector
+
+    Counter(String where) {
+        selector = where
+    }
+
+    def init(numberValue) {
         def html = {
             div(class: "widget bg-${randomColor()}") {
                 p 'Number of books'
@@ -15,7 +21,7 @@ class Counter implements Visible, Colorable {
                 }
             }
         }
-        draw(html, where)
+        draw(html, selector)
     }
 
     def setValue(newValue) {

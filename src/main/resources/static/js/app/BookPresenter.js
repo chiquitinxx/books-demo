@@ -19,13 +19,14 @@ function BookPresenter() {
   gSobject.title = null;
   gSobject.author = null;
   gSobject.year = null;
-  gSobject['init'] = function(it) {
+  gSobject['init'] = function(counterMessage) {
+    gs.mc(gSobject.counter,"init",[counterMessage]);
     gs.mc(gSobject,"bindNewBook",[]);
     gs.mc(gSobject,"clearNewBook",[]);
     return gs.mc(gSobject,"initBooks",[]);
   }
   gSobject['addBookToServer'] = function(it) {
-    var book = Book(gs.map().add("author",gSobject.author).add("title",gSobject.title).add("year",parseInt(gSobject.year)));
+    var book = Book(gs.map().add("author",gSobject.author).add("title",gSobject.title).add("year",(gs.bool(gSobject.year) ? parseInt(gSobject.year) : 0)));
     if (gs.mc(book,"validate",[])) {
       return gs.mc(gSobject.gQuery,"doRemoteCall",["/addBook", "POST", book, function(data) {
         if (gs.equals(gs.gp(data,"result"), "OK")) {

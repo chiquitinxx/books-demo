@@ -19,14 +19,15 @@ class BookPresenter implements Chart {
     String author
     String year
 
-    void init() {
+    void init(String counterMessage) {
+        counter.init counterMessage
         bindNewBook()
         clearNewBook()
         initBooks()
     }
 
     void addBookToServer() {
-        Book book = new Book(author: author, title: title, year: Integer.parseInt(year))
+        Book book = new Book(author: author, title: title, year: year ? Integer.parseInt(year) : 0 )
         if (book.validate()) {
             gQuery.doRemoteCall('/addBook', 'POST', book, { data ->
                 if (data.result == 'OK') {

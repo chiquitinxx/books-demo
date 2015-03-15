@@ -8,6 +8,9 @@ Visible.gSaT = function(target) {
 Visible.$init$ = function($self) {
   return $self.component_Visible__gquery = GQueryImpl();
 }
+function Visible$static$init$($static$self){
+  
+};
 Visible.draw = function($self, html, selector) {
   if (gs.bool(selector)) {
     return gs.mc(gs.execCall($self.component_Visible__gquery, this, [selector]),"html",[gs.execStatic(HtmlBuilder,'build', this,[html])]);

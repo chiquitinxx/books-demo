@@ -4,6 +4,9 @@ Chart.gSaT = function(target) {
 };
 Chart.$init$ = function($self) {
 }
+function Chart$static$init$($static$self){
+  
+};
 Chart.pieChart = function($self, selector, data) {
   new Chartist.Pie(selector, gs.toJavascript(data));
 }
