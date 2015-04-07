@@ -1,6 +1,8 @@
 == http://grooscript.org[grooscript] books demo
 
-This is a Spring boot application, using groovy templates, websockets, require.js and grooscript.
+This is a Spring boot web application, using groovy templates, websockets, require.js and grooscript.
+
+image::books.png[Web]
 
 Using grooscript gradle link:http://plugins.gradle.org/plugin/org.grooscript.conversion[plugin] to make conversions of groovy code to javascript.
 
