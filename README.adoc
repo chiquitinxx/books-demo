@@ -1,0 +1,21 @@
+== http://grooscript.org[grooscript] books demo
+
+This is a Spring boot application, using groovy templates, websockets, require.js and grooscript.
+
+Using grooscript gradle link:http://plugins.gradle.org/plugin/org.grooscript.conversion[plugin] to make conversions of groovy code to javascript.
+
+== Run
+
+Using gradle wrapper in a spring boot application
+
+    ./gradlew bootRun
+
+Then open your browser in http://localhost:8080
+
+== Contact
+
+Twitter: link:http://twitter.com/grooscript:[@grooscript]
+
+Email: mailto:grooscript@gmail.com[]
+
+Please all feedback welcome, thanks!
