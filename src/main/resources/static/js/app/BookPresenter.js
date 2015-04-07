@@ -11,7 +11,7 @@ function BookPresenter() {
   }
   Chart.$init$(gSobject);
   gSobject.pieChart = function(x1,x2) { return Chart.pieChart(gSobject,x1,x2); }
-  gSobject.books = null;
+  gSobject.books = gs.list([]);
   gSobject.urlBooks = null;
   gSobject.booksListSelector = null;
   gSobject.counter = null;
@@ -19,8 +19,7 @@ function BookPresenter() {
   gSobject.title = null;
   gSobject.author = null;
   gSobject.year = null;
-  gSobject['init'] = function(counterMessage) {
-    gs.mc(gSobject.counter,"init",[counterMessage]);
+  gSobject['init'] = function(it) {
     gs.mc(gSobject,"bindNewBook",[]);
     gs.mc(gSobject,"clearNewBook",[]);
     return gs.mc(gSobject,"initBooks",[]);
@@ -38,7 +37,7 @@ function BookPresenter() {
         return gs.println("Server error adding book: " + (error) + "");
       }]);
     } else {
-      return gs.println("Validation not passed!");
+      return gs.mc(gSobject,"errorMessage",["Nope", gs.mc(book,"errorMessage",[])]);
     };
   }
   gSobject['showBooks'] = function(it) {
@@ -62,7 +61,7 @@ function BookPresenter() {
   }
   gSobject['newBookFromServer'] = function(book) {
     gs.mc(gSobject.books,'leftShift', gs.list([book]));
-    gs.mc(gSobject,"updateBooksNumber",[]);
+    gs.mc(gSobject,"updateBooksNumber",[gs.mc(gSobject.books,"size",[])]);
     gs.mc(gSobject,"updateLastBook",[book]);
     return gs.mc(gSobject,"drawPie",[]);
   }
@@ -73,14 +72,14 @@ function BookPresenter() {
   gSobject['initBooks'] = function(it) {
     return gs.mc(gSobject.gQuery,"doRemoteCall",[gSobject.urlBooks, "GET", null, function(listBooks) {
       gSobject.books = listBooks;
-      gs.mc(gSobject,"updateBooksNumber",[]);
+      gs.mc(gSobject,"updateBooksNumber",[gs.mc(listBooks,"size",[])]);
       return gs.mc(gSobject,"drawPie",[]);
     }, function(msg) {
       return gs.println(gs.plus("Error initBooks:", msg));
     }]);
   }
-  gSobject['updateBooksNumber'] = function(it) {
-    return gs.sp(gSobject.counter,"value",gs.mc(gSobject.books,"size",[]));
+  gSobject['updateBooksNumber'] = function(number) {
+    return gs.sp(gSobject.counter,"number",number);
   }
   gSobject['drawPie'] = function(it) {
     var groups = gs.mc(gs.mc(gSobject.books,"sort",[false, function(it) {
@@ -97,6 +96,9 @@ function BookPresenter() {
   }
   gSobject['updateLastBook'] = function(book) {
     return gs.mc(gs.mc(gSobject,"gQuery",["#lastBook"]),"html",[gs.execStatic(Templates,'applyTemplate', this,["lastBook.gtpl", gs.map().add("last",book)])]);
+  }
+  gSobject.errorMessage = function(head, message) {
+    swal(head, message, "error");
   }
   if (arguments.length == 1) {gs.passMapToObject(arguments[0],gSobject);};
   

@@ -15,12 +15,14 @@ requirejs(['jquery', 'grooscript.min', 'grooscript-tools', 'app/Colorable'], fun
             stompClient.subscribe('/topic/time', function(msg) { $('#actualTime').text(msg.date);});
             stompClient.subscribe('/topic/newBook', function(book) { bookPresenter.newBookFromServer(book);});
             stompClient.start('/demo');
+            var counter = Counter();
+            counter.start('#counter');
             bookPresenter = BookPresenter({
                 urlBooks: '/books',
-                counter: Counter('#counter'),
+                counter: counter,
                 booksListSelector: '.bookList'
             });
-            bookPresenter.init('Calculating...');
+            bookPresenter.init();
         });
     });
 });

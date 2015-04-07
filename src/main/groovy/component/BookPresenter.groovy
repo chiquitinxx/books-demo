@@ -1,6 +1,7 @@
 package component
 
 import demo.model.Book
+import org.grooscript.asts.GsNative
 import org.grooscript.jquery.GQuery
 import org.grooscript.jquery.GQueryImpl
 import org.grooscript.templates.Templates
@@ -10,7 +11,7 @@ import org.grooscript.templates.Templates
  */
 class BookPresenter implements Chart {
 
-    List<Book> books
+    List<Book> books = []
     String urlBooks
     String booksListSelector
     Counter counter
@@ -19,8 +20,7 @@ class BookPresenter implements Chart {
     String author
     String year
 
-    void init(String counterMessage) {
-        counter.init counterMessage
+    void init() {
         bindNewBook()
         clearNewBook()
         initBooks()
@@ -39,7 +39,7 @@ class BookPresenter implements Chart {
                 println "Server error adding book: ${error}"
             })
         } else {
-            println 'Validation not passed!'
+            errorMessage('Nope', book.errorMessage())
         }
     }
 
@@ -68,7 +68,7 @@ class BookPresenter implements Chart {
 
     void newBookFromServer(Book book) {
         books << book
-        updateBooksNumber()
+        updateBooksNumber(books.size())
         updateLastBook(book)
         drawPie()
     }
@@ -81,15 +81,15 @@ class BookPresenter implements Chart {
     private initBooks() {
         gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
             books = listBooks
-            updateBooksNumber()
+            updateBooksNumber(listBooks.size())
             drawPie()
         }, { msg ->
             println 'Error initBooks:'+msg
         })
     }
 
-    private updateBooksNumber() {
-        counter.value = books.size()
+    private updateBooksNumber(number) {
+        counter.number = number
     }
 
     private drawPie() {
@@ -105,4 +105,9 @@ class BookPresenter implements Chart {
     private updateLastBook(Book book) {
         gQuery('#lastBook').html Templates.applyTemplate('lastBook.gtpl', [last: book])
     }
+
+    @GsNative
+    private errorMessage(String head, String message) {/*
+        swal(head, message, "error");
+    */}
 }

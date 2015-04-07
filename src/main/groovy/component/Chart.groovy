@@ -2,9 +2,6 @@ package component
 
 import org.grooscript.asts.GsNative
 
-/**
- * Created by jorgefrancoleza on 14/1/15.
- */
 trait Chart {
 
     @GsNative

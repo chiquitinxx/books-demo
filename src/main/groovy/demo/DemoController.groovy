@@ -39,11 +39,12 @@ class DemoController {
                                  @RequestParam(value="title", required=true) String title,
                                  @RequestParam(value="year", required=true) int year) {
         Book book = new Book(author: author, title: title, year: year)
-        if (book.validate()) {
+        boolean validBook = book.validate()
+        if (validBook) {
             book = bookingRepository.save(book)
             template.convertAndSend('/topic/newBook', book)
         }
-        return [result: book.validate() ? 'OK' : 'ERROR']
+        return [result: validBook ? 'OK' : 'ERROR']
     }
 
     private initRepositoryIfEmpty() {

@@ -1,30 +1,30 @@
 package component
 
+import component.ast.Component
+
 /**
  * Created by jorge on 27/12/14.
  */
-class Counter implements Visible, Colorable {
+@Component
+class Counter implements Colorable {
 
-    String selector
+    Integer number
 
-    Counter(String where) {
-        selector = where
+    void init() {
+        number = null
     }
 
-    def init(numberValue) {
-        def html = {
-            div(class: "widget bg-${randomColor()}") {
+    void render() {
+        div(class: "widget bg-${randomColor()}") {
+            if (number) {
                 p 'Number of books'
-                em numberValue.toString()
+                em number ? number.toString() : '...'
                 a(href:"#", class:"button small secondary", onclick: 'bookPresenter.showBooks()') {
                     yield 'Show'
                 }
+            } else {
+                p 'Reading books...'
             }
         }
-        draw(html, selector)
-    }
-
-    def setValue(newValue) {
-        gquery.call('#counter em').text newValue
     }
 }

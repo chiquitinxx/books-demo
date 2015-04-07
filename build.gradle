@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.2.2.RELEASE'
+        springBootVersion = '1.2.3.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -23,7 +23,7 @@ apply plugin: 'mongo'
 
 war {
     baseName = 'demo'
-    version = '0.0.4-SNAPSHOT'
+    version = '0.0.5-SNAPSHOT'
 }
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -42,7 +42,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework:spring-messaging")
     compile("org.springframework.boot:spring-boot-starter-groovy-templates")
-    compile("org.codehaus.groovy:groovy-all:2.4.1")
+    compile("org.codehaus.groovy:groovy-all:2.4.3")
     compile("org.grooscript:grooscript:1.0.1") {
         exclude module: "groovy"
         exclude module: "groovy-json"
