@@ -16,13 +16,14 @@ function BookPresenter() {
   gSobject.booksListSelector = null;
   gSobject.counter = null;
   gSobject.gQuery = GQueryImpl();
+  gSobject.sortByTitle = false;
   gSobject.title = null;
   gSobject.author = null;
   gSobject.year = null;
   gSobject['init'] = function(it) {
     gs.mc(gSobject,"bindNewBook",[]);
     gs.mc(gSobject,"clearNewBook",[]);
-    return gs.mc(gSobject,"initBooks",[]);
+    return gs.mc(gSobject,"getBooksFromServer",[]);
   }
   gSobject['addBookToServer'] = function(it) {
     var book = Book(gs.map().add("author",gSobject.author).add("title",gSobject.title).add("year",(gs.bool(gSobject.year) ? parseInt(gSobject.year) : 0)));
@@ -31,33 +32,14 @@ function BookPresenter() {
         if (gs.equals(gs.gp(data,"result"), "OK")) {
           return gs.mc(gSobject,"clearNewBook",[]);
         } else {
-          return gs.println("Validation error adding book.");
+          return gs.mc(gSobject,"errorMessage",["Error", "Validation server error adding book."]);
         };
       }, function(error) {
-        return gs.println("Server error adding book: " + (error) + "");
+        return gs.mc(gSobject,"errorMessage",["Error", "Server error adding book: " + (error) + ""]);
       }]);
     } else {
       return gs.mc(gSobject,"errorMessage",["Nope", gs.mc(book,"errorMessage",[])]);
     };
-  }
-  gSobject['showBooks'] = function(it) {
-    if (gs.bool(gSobject.books)) {
-      var data = gs.map().add("listBooks",gSobject.books).add("searchString","");
-      gs.mc(gs.mc(gSobject,"gQuery",[gSobject.booksListSelector]),"html",[gs.execStatic(Templates,'applyTemplate', this,["bookList.gtpl", data])]);
-      return gs.mc(gSobject.gQuery,"onChange",["marking", gSobject["changeSearch"]]);
-    };
-  }
-  gSobject['changeSearch'] = function(searchText) {
-    var data = gs.map().add("listBooks",gSobject.books).add("searchString",searchText);
-    return gs.mc(gs.mc(gSobject,"gQuery",[".tableSearch"]),"html",[gs.execStatic(Templates,'applyTemplate', this,["bookTable.gtpl", data])]);
-  }
-  gSobject['hideBooks'] = function(it) {
-    return gs.mc(gs.mc(gSobject,"gQuery",[gSobject.booksListSelector]),"html",[""]);
-  }
-  gSobject['clearNewBook'] = function(it) {
-    gs.mc(this,"setAuthor",[""], gSobject);
-    gs.mc(this,"setTitle",[""], gSobject);
-    return gs.mc(this,"setYear",[""], gSobject);
   }
   gSobject['newBookFromServer'] = function(book) {
     gs.mc(gSobject.books,'leftShift', gs.list([book]));
@@ -65,17 +47,40 @@ function BookPresenter() {
     gs.mc(gSobject,"updateLastBook",[book]);
     return gs.mc(gSobject,"drawPie",[]);
   }
+  gSobject['showListBooks'] = function(it) {
+    if (gs.bool(gSobject.books)) {
+      var data = gs.map().add("listBooks",gSobject.books).add("searchString","");
+      gs.mc(gs.mc(gSobject,"gQuery",[gSobject.booksListSelector]),"html",[gs.execStatic(Templates,'applyTemplate', this,["bookList.gtpl", data])]);
+      return gs.mc(gSobject.gQuery,"onChange",["marking", gSobject["changeSearchText"]]);
+    };
+  }
+  gSobject['changeSearchText'] = function(searchText) {
+    var data = gs.map().add("listBooks",gSobject.books).add("searchString",searchText).add("sortByTitle",gSobject.sortByTitle);
+    return gs.mc(gs.mc(gSobject,"gQuery",[".tableSearch"]),"html",[gs.execStatic(Templates,'applyTemplate', this,["bookTable.gtpl", data])]);
+  }
+  gSobject['changeSort'] = function(it) {
+    gSobject.sortByTitle = !gSobject.sortByTitle;
+    return gs.mc(gSobject,"changeSearchText",[gs.mc(gs.mc(gSobject,"gQuery",["#marking"]),"val",[])]);
+  }
+  gSobject['hideListBooks'] = function(it) {
+    return gs.mc(gs.mc(gSobject,"gQuery",[gSobject.booksListSelector]),"html",[""]);
+  }
+  gSobject['clearNewBook'] = function(it) {
+    gs.mc(this,"setAuthor",[""], gSobject);
+    gs.mc(this,"setTitle",[""], gSobject);
+    return gs.mc(this,"setYear",[""], gSobject);
+  }
   gSobject['bindNewBook'] = function(it) {
     gs.mc(gSobject.gQuery,"bindAllProperties",[this]);
     return gs.mc(gSobject.gQuery,"onEvent",["#addNewBook", "click", gSobject["addBookToServer"]]);
   }
-  gSobject['initBooks'] = function(it) {
+  gSobject['getBooksFromServer'] = function(it) {
     return gs.mc(gSobject.gQuery,"doRemoteCall",[gSobject.urlBooks, "GET", null, function(listBooks) {
       gSobject.books = listBooks;
       gs.mc(gSobject,"updateBooksNumber",[gs.mc(listBooks,"size",[])]);
       return gs.mc(gSobject,"drawPie",[]);
     }, function(msg) {
-      return gs.println(gs.plus("Error initBooks:", msg));
+      return gs.mc(gSobject,"errorMessage",["Error", "Error getBooksFromServer: " + (msg) + ""]);
     }]);
   }
   gSobject['updateBooksNumber'] = function(number) {

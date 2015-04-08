@@ -7,7 +7,7 @@ requirejs.config({
 });
 
 requirejs(['jquery', 'grooscript.min', 'grooscript-tools', 'app/Colorable'], function($) {
-    requirejs(['app/Templates', 'sockjs-0.3.4', 'stomp', 'app/StompClient', 'app/Visible', 'app/Counter', 'app/Chart',
+    requirejs(['app/Templates', 'sockjs-0.3.4', 'stomp', 'app/StompClient', 'app/Counter', 'app/Chart',
         'app/BookPresenter', 'app/Book'], function() {
         $(document).ready(function () {
             var stompClient = StompClient();

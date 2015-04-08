@@ -6,9 +6,6 @@ import org.grooscript.jquery.GQuery
 import org.grooscript.jquery.GQueryImpl
 import org.grooscript.templates.Templates
 
-/**
- * Created by jorgefrancoleza on 13/1/15.
- */
 class BookPresenter implements Chart {
 
     List<Book> books = []
@@ -16,6 +13,9 @@ class BookPresenter implements Chart {
     String booksListSelector
     Counter counter
     GQuery gQuery = new GQueryImpl()
+    boolean sortByTitle = false
+
+    //New book properties
     String title
     String author
     String year
@@ -23,7 +23,7 @@ class BookPresenter implements Chart {
     void init() {
         bindNewBook()
         clearNewBook()
-        initBooks()
+        getBooksFromServer()
     }
 
     void addBookToServer() {
@@ -33,37 +33,14 @@ class BookPresenter implements Chart {
                 if (data.result == 'OK') {
                     clearNewBook()
                 } else {
-                    println "Validation error adding book."
+                    errorMessage 'Error', 'Validation server error adding book.'
                 }
             }, { error ->
-                println "Server error adding book: ${error}"
+                errorMessage 'Error', "Server error adding book: ${error}"
             })
         } else {
             errorMessage('Nope', book.errorMessage())
         }
-    }
-
-    void showBooks() {
-        if (books) {
-            def data = [listBooks: books, searchString: '']
-            gQuery(booksListSelector).html Templates.applyTemplate('bookList.gtpl', data)
-            gQuery.onChange('marking', this.&changeSearch)
-        }
-    }
-
-    void changeSearch(searchText) {
-        def data = [listBooks: books, searchString: searchText]
-        gQuery('.tableSearch').html Templates.applyTemplate('bookTable.gtpl', data)
-    }
-
-    void hideBooks() {
-        gQuery(booksListSelector).html ''
-    }
-
-    void clearNewBook() {
-        setAuthor('')
-        setTitle('')
-        setYear('')
     }
 
     void newBookFromServer(Book book) {
@@ -73,18 +50,46 @@ class BookPresenter implements Chart {
         drawPie()
     }
 
+    void showListBooks() {
+        if (books) {
+            def data = [listBooks: books, searchString: '']
+            gQuery(booksListSelector).html Templates.applyTemplate('bookList.gtpl', data)
+            gQuery.onChange('marking', this.&changeSearchText)
+        }
+    }
+
+    void changeSearchText(searchText) {
+        def data = [listBooks: books, searchString: searchText, sortByTitle: sortByTitle]
+        gQuery('.tableSearch').html Templates.applyTemplate('bookTable.gtpl', data)
+    }
+
+    void changeSort() {
+        sortByTitle = !sortByTitle
+        changeSearchText(gQuery('#marking').val())
+    }
+
+    void hideListBooks() {
+        gQuery(booksListSelector).html ''
+    }
+
+    void clearNewBook() {
+        setAuthor('')
+        setTitle('')
+        setYear('')
+    }
+
     private bindNewBook() {
         gQuery.bindAllProperties(this)
         gQuery.onEvent('#addNewBook', 'click', this.&addBookToServer)
     }
 
-    private initBooks() {
+    private getBooksFromServer() {
         gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
             books = listBooks
             updateBooksNumber(listBooks.size())
             drawPie()
         }, { msg ->
-            println 'Error initBooks:'+msg
+            errorMessage 'Error', "Error getBooksFromServer: $msg"
         })
     }
 

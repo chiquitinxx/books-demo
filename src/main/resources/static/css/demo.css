@@ -3,6 +3,10 @@
     height:100%;
 }*/
 
+.sortedField {
+    background-color: coral;
+}
+
 h1, h2, h3 {
     color: #fff;
 }

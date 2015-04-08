@@ -2,9 +2,6 @@ package component
 
 import org.grooscript.asts.GsNative
 
-/**
- * Created by jorge on 27/12/14.
- */
 class StompClient {
 
     Map subscriptions = [:]

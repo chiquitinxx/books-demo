@@ -9,10 +9,10 @@ function Counter() {
   if (Colorable['getProperty']) {
     gSobject.getProperty = function() { return Colorable.getProperty(gSobject); }
   }
+  Colorable.$init$(gSobject);
   gSobject.randomColor = function() { return Colorable.randomColor(gSobject); }
   gSobject.getColorClasses = function() { return Colorable.getColorClasses(gSobject); }
   gSobject.setColorClasses = function(x1) { return Colorable.setColorClasses(gSobject,x1); }
-  Colorable.$init$(gSobject);
   gSobject.number = null;
   gSobject.gQuery = GQueryImpl();
   gSobject.selector = null;
@@ -25,7 +25,7 @@ function Counter() {
         if (gs.bool(gSobject.number)) {
           gs.mc(this,"p",["Number of books"], gSobject);
           gs.mc(this,"em",[(gs.bool(gSobject.number) ? gs.mc(gSobject.number,"toString",[]) : "...")], gSobject);
-          return gs.mc(this,"a",[gs.map().add("href","#").add("class","button small secondary").add("onclick","bookPresenter.showBooks()"), function(it) {
+          return gs.mc(this,"a",[gs.map().add("href","#").add("class","button small secondary").add("onclick","bookPresenter.showListBooks()"), function(it) {
             return gs.mc(this,"yield",["Show"], gSobject);
           }], gSobject);
         } else {

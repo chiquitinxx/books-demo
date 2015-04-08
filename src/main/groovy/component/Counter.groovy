@@ -2,9 +2,6 @@ package component
 
 import component.ast.Component
 
-/**
- * Created by jorge on 27/12/14.
- */
 @Component
 class Counter implements Colorable {
 
@@ -19,7 +16,7 @@ class Counter implements Colorable {
             if (number) {
                 p 'Number of books'
                 em number ? number.toString() : '...'
-                a(href:"#", class:"button small secondary", onclick: 'bookPresenter.showBooks()') {
+                a(href:"#", class:"button small secondary", onclick: 'bookPresenter.showListBooks()') {
                     yield 'Show'
                 }
             } else {

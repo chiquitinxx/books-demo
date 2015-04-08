@@ -21,7 +21,7 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
       return gs.mc(Templates,"p",[function(it) {
         gs.mc(Templates,"yield",["Search:"]);
         gs.mc(Templates,"input",[gs.map().add("id","marking").add("type","text")]);
-        return gs.mc(Templates,"a",[gs.map().add("href","#").add("class","button tiny secondary").add("onclick","bookPresenter.hideBooks()"), function(it) {
+        return gs.mc(Templates,"a",[gs.map().add("href","#").add("class","button tiny secondary").add("onclick","bookPresenter.hideListBooks()"), function(it) {
           return gs.mc(Templates,"yield",["Hide"]);
         }]);
       }]);
@@ -36,7 +36,9 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
     return gs.mc(Templates,"table",[function(it) {
       gs.mc(Templates,"thead",[function(it) {
         return gs.mc(Templates,"tr",[function(it) {
-          gs.mc(Templates,"th",["Title"]);
+          gs.mc(Templates,"th",[gs.map().add("onclick","bookPresenter.changeSort()").add("class","" + ((gs.bool(gs.gp(model,"sortByTitle")) ? "sortedField" : "")) + ""), function(it) {
+            return gs.mc(Templates,"yield",["Title"]);
+          }]);
           gs.mc(Templates,"th",["Author"]);
           return gs.mc(Templates,"th",["Year"]);
         }]);
@@ -45,7 +47,10 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
         return gs.mc(data,"replaceAll",[gs.gp(model,"searchString"), "<span class='bg-red'>" + (gs.gp(model,"searchString")) + "</span>"]);
       };
       return gs.mc(Templates,"tbody",[function(it) {
-        return gs.mc(gs.gp(model,"listBooks"),"eachWithIndex",[function(book, i) {
+        var list = (gs.bool(gs.gp(model,"sortByTitle")) ? gs.mc(gs.gp(model,"listBooks"),"sort",[false, function(it) {
+          return gs.gp(it,"title");
+        }]) : gs.gp(model,"listBooks"));
+        return gs.mc(list,"eachWithIndex",[function(book, i) {
           return gs.mc(Templates,"tr",[gs.map().add("class",(gs.equals((gs.mod(i, 2)), 0) ? "bg-silver" : "bg-white")), function(it) {
             gs.mc(Templates,"td",[function(it) {
               return gs.mc(Templates,"yieldUnescaped",[gs.execCall(markLetters, this, [gs.gp(book,"title")])]);

@@ -1,7 +1,9 @@
 table {
     thead {
         tr {
-            th 'Title'
+            th(onclick: 'bookPresenter.changeSort()', class: "${model.sortByTitle ? 'sortedField' : ''}") {
+                yield 'Title'
+            }
             th 'Author'
             th 'Year'
         }
@@ -12,7 +14,8 @@ table {
         )
     }
     tbody {
-        model.listBooks.eachWithIndex { book, i ->
+        def list = model.sortByTitle ? model.listBooks.sort(false, { it.title }) : model.listBooks
+        list.eachWithIndex { book, i ->
             tr(class: (i % 2 == 0 ? 'bg-silver' : 'bg-white')) {
                 td {
                     yieldUnescaped markLetters(book.title)
