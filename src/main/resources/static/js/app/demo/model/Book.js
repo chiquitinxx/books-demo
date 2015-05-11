@@ -1,3 +1,4 @@
+define(function () {
 function Book() {
   var gSobject = gs.inherit(gs.baseClass,'Book');
   gSobject.clazz = { name: 'demo.model.Book', simpleName: 'Book'};
@@ -26,3 +27,6 @@ function Book() {
   
   return gSobject;
 };
+
+return Book;
+});

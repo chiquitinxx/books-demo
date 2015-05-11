@@ -10,6 +10,7 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.grooscript.builder.HtmlBuilder
+import org.grooscript.jquery.GQuery
 import org.grooscript.jquery.GQueryImpl
 
 import java.lang.reflect.Modifier
@@ -79,32 +80,53 @@ public class ComponentImpl implements ASTTransformation {
             VariableScope closureScope = variableScope.copy()
             closure.setVariableScope(closureScope)
 
-            renderMethod.setCode(new BlockStatement([
-                new ExpressionStatement(
+            renderMethod.setCode(renderBlockCode(blockScope, closure, classNode))
+        }
+    }
+
+    private BlockStatement renderBlockCode(VariableScope blockScope, ClosureExpression closure, ClassNode classNode) {
+        BlockStatement result = new BlockStatement([
+            new ExpressionStatement(
+                new MethodCallExpression(
                     new MethodCallExpression(
-                        new MethodCallExpression(
-                            new PropertyExpression(
+                        new PropertyExpression(
                                 new VariableExpression('this', ClassHelper.OBJECT_TYPE),
                                 'gQuery'
-                            ),
-                            'call',
-                            new ArgumentListExpression([
-                                    new VariableExpression('selector', ClassHelper.STRING_TYPE)
-                            ])
                         ),
-                        'html',
+                        'call',
                         new ArgumentListExpression([
-                            new MethodCallExpression(
+                                new VariableExpression('selector', ClassHelper.STRING_TYPE)
+                        ])
+                    ),
+                    'html',
+                    new ArgumentListExpression([
+                        new MethodCallExpression(
                                 new ClassExpression(new ClassNode(HtmlBuilder)),
                                 'build' ,
                                 new ArgumentListExpression([
-                                    closure
+                                        closure
                                 ])
-                            )
-                        ])
-                    )
+                        )
+                    ])
                 )
-            ], blockScope))
+            )
+        ], blockScope)
+        addAfterRenderMethod(result, classNode)
+        return result
+    }
+
+    private addAfterRenderMethod(BlockStatement blockStatement, ClassNode classNode) {
+        if (classNode.methods.find { it.name == 'afterRender'}) {
+            blockStatement.addStatement(new ExpressionStatement(new MethodCallExpression(
+                    new VariableExpression('this', ClassHelper.OBJECT_TYPE),
+                    'afterRender',
+                    new ArgumentListExpression([
+                            new PropertyExpression(
+                                    new VariableExpression('this', ClassHelper.OBJECT_TYPE),
+                                    'gQuery'
+                            )
+                    ])
+            )))
         }
     }
 }

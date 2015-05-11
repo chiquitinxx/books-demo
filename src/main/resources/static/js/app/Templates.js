@@ -21,7 +21,7 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
       return gs.mc(Templates,"p",[function(it) {
         gs.mc(Templates,"yield",["Search:"]);
         gs.mc(Templates,"input",[gs.map().add("id","marking").add("type","text")]);
-        return gs.mc(Templates,"a",[gs.map().add("href","#").add("class","button tiny secondary").add("onclick","bookPresenter.hideListBooks()"), function(it) {
+        return gs.mc(Templates,"a",[gs.map().add("href","#").add("class","button tiny secondary").add("id","hideListBooks"), function(it) {
           return gs.mc(Templates,"yield",["Hide"]);
         }]);
       }]);
@@ -36,7 +36,7 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
     return gs.mc(Templates,"table",[function(it) {
       gs.mc(Templates,"thead",[function(it) {
         return gs.mc(Templates,"tr",[function(it) {
-          gs.mc(Templates,"th",[gs.map().add("onclick","bookPresenter.changeSort()").add("class","" + ((gs.bool(gs.gp(model,"sortByTitle")) ? "sortedField" : "")) + ""), function(it) {
+          gs.mc(Templates,"th",[gs.map().add("id","titleHead").add("class","" + ((gs.bool(gs.gp(model,"sortByTitle")) ? "sortedField" : "")) + ""), function(it) {
             return gs.mc(Templates,"yield",["Title"]);
           }]);
           gs.mc(Templates,"th",["Author"]);

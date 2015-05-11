@@ -1,3 +1,4 @@
+define(function () {
 function StompClient() {
   var gSobject = gs.inherit(gs.baseClass,'StompClient');
   gSobject.clazz = { name: 'component.StompClient', simpleName: 'StompClient'};
@@ -23,3 +24,6 @@ function StompClient() {
   
   return gSobject;
 };
+
+return StompClient;
+});

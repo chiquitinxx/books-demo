@@ -1,3 +1,4 @@
+define(['component/Colorable'], function (Colorable) {
 Colorable = function() {};
 Colorable.gSaT = function(target) {
   Colorable.$init$(target);
@@ -16,3 +17,6 @@ Colorable.randomColor = function($self) {
 }
 Colorable.getColorClasses = function($self) { return $self.component_Colorable__colorClasses; }
 Colorable.setColorClasses = function($self, value) { $self.component_Colorable__colorClasses = value; }
+
+return Colorable;
+});

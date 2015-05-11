@@ -11,7 +11,8 @@ class BookPresenter implements Chart {
     List<Book> books = []
     String urlBooks
     String booksListSelector
-    Counter counter
+    String counterSelector
+    Counter booksCounter
     GQuery gQuery = new GQueryImpl()
     boolean sortByTitle = false
 
@@ -21,8 +22,10 @@ class BookPresenter implements Chart {
     String year
 
     void init() {
+        putCounter(counterSelector)
         bindNewBook()
         clearNewBook()
+        gQuery('#clearBookButton').click(this.&clearNewBook)
         getBooksFromServer()
     }
 
@@ -43,8 +46,17 @@ class BookPresenter implements Chart {
         }
     }
 
+    private void putCounter(String counterSelector) {
+        booksCounter = new Counter()
+        booksCounter.onClickShow = this.&showListBooks
+        booksCounter.start(counterSelector)
+    }
+
     void newBookFromServer(Book book) {
         books << book
+        if ($('.tableSearch')) {
+            changeSearchText(gQuery('#marking').val())
+        }
         updateBooksNumber(books.size())
         updateLastBook(book)
         drawPie()
@@ -55,12 +67,15 @@ class BookPresenter implements Chart {
             def data = [listBooks: books, searchString: '']
             gQuery(booksListSelector).html Templates.applyTemplate('bookList.gtpl', data)
             gQuery.onChange('marking', this.&changeSearchText)
+            gQuery.onEvent('#hideListBooks', 'click', this.&hideListBooks)
+            sortByTitleEvent()
         }
     }
 
     void changeSearchText(searchText) {
         def data = [listBooks: books, searchString: searchText, sortByTitle: sortByTitle]
         gQuery('.tableSearch').html Templates.applyTemplate('bookTable.gtpl', data)
+        sortByTitleEvent()
     }
 
     void changeSort() {
@@ -94,7 +109,7 @@ class BookPresenter implements Chart {
     }
 
     private updateBooksNumber(number) {
-        counter.number = number
+        booksCounter.number = number
     }
 
     private drawPie() {
@@ -115,4 +130,8 @@ class BookPresenter implements Chart {
     private errorMessage(String head, String message) {/*
         swal(head, message, "error");
     */}
+
+    private sortByTitleEvent() {
+        gQuery.onEvent('#titleHead', 'click', this.&changeSort)
+    }
 }

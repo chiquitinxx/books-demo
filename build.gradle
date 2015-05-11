@@ -3,32 +3,36 @@ buildscript {
         springBootVersion = '1.2.3.RELEASE'
     }
     repositories {
+        mavenLocal() //todo remove
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
+        classpath 'org.grooscript:grooscript-gradle-plugin:1.1.0-SNAPSHOT'
     }
 }
 
-plugins {
-  id "org.grooscript.conversion" version "1.0.1"
-}
+//plugins {
+//  id "org.grooscript.conversion" version "1.0.1"
+//}
 
 apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'spring-boot' 
 apply plugin: 'war'
 apply plugin: 'mongo'
+apply plugin: 'org.grooscript.conversion' //todo remove
 
 war {
     baseName = 'demo'
-    version = '0.0.5-SNAPSHOT'
+    version = '0.0.6-SNAPSHOT'
 }
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
+    mavenLocal() //todo remove
     mavenCentral()
 }
 
@@ -43,7 +47,7 @@ dependencies {
     compile("org.springframework:spring-messaging")
     compile("org.springframework.boot:spring-boot-starter-groovy-templates")
     compile("org.codehaus.groovy:groovy-all:2.4.3")
-    compile("org.grooscript:grooscript:1.0.1") {
+    compile("org.grooscript:grooscript:1.1.0-SNAPSHOT") {
         exclude module: "groovy"
         exclude module: "groovy-json"
     }
@@ -56,10 +60,15 @@ dependencies {
     }
 }
 
+springBoot {
+    mainClass = "demo.Application"
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
 
+/*
 grooscript {
     source = ['src/main/groovy/component']
     destination = 'src/main/resources/static/js/app'
@@ -70,7 +79,7 @@ task bookConvertThread(type: org.grooscript.gradle.ThreadTask) {
     source = ['src/main/groovy/demo/model/Book.groovy']
     destination = 'src/main/resources/static/js/app'
     classPath = ['src/main/groovy']
-}
+}*/
 
 task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
     templatesPath = 'src/main/resources/templates'
@@ -80,11 +89,18 @@ task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
 }
 
 spy {
-    files = ['src/main/resources/templates', 'src/main/resources/static/css', 'src/main/resources/static/js/app']
+    files = ['src/main/resources/templates', 'src/main/resources/static/css']
     onChanges = { list ->
         springWebsocketTo 'http://localhost:8080/demo' data 'templates' onChannel '/app/reload'
     }
 }
 
-spyChanges.dependsOn templatesListen, thread, bookConvertThread
+task myRequire(type: org.grooscript.gradle.RequireJsTask) {
+    sourceFile = 'src/main/groovy/bookDemo.groovy'
+    //sourceFile = 'src/main/groovy/component/Chart.groovy'
+    destinationFolder = 'src/main/resources/static/js/app'
+    mainContextScope = ['$', 'location']
+}
+
+spyChanges.dependsOn templatesListen //, thread, bookConvertThread
 bootRun.dependsOn startManagedMongoDb, spyChanges

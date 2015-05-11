@@ -78,7 +78,7 @@ class BookPresenterSpec extends Specification {
     private gQueryList = Mock(GQueryList)
     private urlBooks = 'urlBooks'
     private bookListSelector = 'bookListSelector'
-    private presenter = new BookPresenter(gQuery: gQuery, counter: counter,
+    private presenter = new BookPresenter(gQuery: gQuery, booksCounter: counter,
             urlBooks: urlBooks, booksListSelector: bookListSelector,
             author: author, title: title, year: year
     )

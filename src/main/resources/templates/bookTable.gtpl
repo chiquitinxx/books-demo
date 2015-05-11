@@ -1,7 +1,7 @@
 table {
     thead {
         tr {
-            th(onclick: 'bookPresenter.changeSort()', class: "${model.sortByTitle ? 'sortedField' : ''}") {
+            th(id: 'titleHead', class: "${model.sortByTitle ? 'sortedField' : ''}") {
                 yield 'Title'
             }
             th 'Author'

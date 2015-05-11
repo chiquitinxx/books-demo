@@ -34,7 +34,7 @@
       a(id: 'addNewBook', href:"#", class:"button tiny secondary postfix", onclick: '') {
           yield 'Add'
       }
-      a(href:"#", class:"button tiny secondary postfix", onclick: 'bookPresenter.clearNewBook()') {
+      a(href:"#", class:"button tiny secondary postfix", id: 'clearBookButton') {
           yield 'Clear'
       }
     }
