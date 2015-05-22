@@ -8,9 +8,11 @@ html {
       link(rel: 'stylesheet', href: "css/${it}.css")
     }
     link(href: 'http://fonts.googleapis.com/css?family=Cabin', rel:'stylesheet', type: 'text/css')
-    script(src: 'js/lib/sweet-alert.min.js') {}
-    script(src: 'js/lib/chartist.min.js') {}
-    script('data-main': 'js/demo', src: 'js/lib/require.js') {}
+    if (demo.Environment.isProduction()) {
+      script(src: 'js/demo-built.js') {}
+    } else {
+      script('data-main': 'js/demo', src: 'js/lib/require.min.js') {}
+    }
   }
   body {
     header(class: 'bg-black') {

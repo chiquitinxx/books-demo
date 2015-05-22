@@ -10,8 +10,8 @@ function BookPresenter() {
   if (Chart['getProperty']) {
     gSobject.getProperty = function() { return Chart.getProperty(gSobject); }
   }
-  Chart.$init$(gSobject);
   gSobject.pieChart = function(x1,x2) { return Chart.pieChart(gSobject,x1,x2); }
+  Chart.$init$(gSobject);
   gSobject.books = gs.list([]);
   gSobject.urlBooks = null;
   gSobject.booksListSelector = null;
@@ -23,7 +23,7 @@ function BookPresenter() {
   gSobject.author = null;
   gSobject.year = null;
   gSobject['init'] = function(it) {
-    gs.mc(gSobject,"putCounter",[gSobject.counterSelector]);
+    gs.mc(gSobject,"startCounter",[gSobject.counterSelector]);
     gs.mc(gSobject,"bindNewBook",[]);
     gs.mc(gSobject,"clearNewBook",[]);
     gs.mc(gs.mc(gSobject,"gQuery",["#clearBookButton"]),"click",[gSobject["clearNewBook"]]);
@@ -45,7 +45,10 @@ function BookPresenter() {
       return gs.mc(gSobject,"errorMessage",["Nope", gs.mc(book,"errorMessage",[])]);
     };
   }
-  gSobject['putCounter'] = function(counterSelector) {
+  gSobject.errorMessage = function(head, message) {
+    swal(head, message, "error");
+  }
+  gSobject['startCounter'] = function(counterSelector) {
     gSobject.booksCounter = Counter();
     gs.sp(gSobject.booksCounter,"onClickShow",gSobject["showListBooks"]);
     return gs.mc(gSobject.booksCounter,"start",[counterSelector]);
@@ -116,9 +119,6 @@ function BookPresenter() {
   }
   gSobject['updateLastBook'] = function(book) {
     return gs.mc(gs.mc(gSobject,"gQuery",["#lastBook"]),"html",[gs.execStatic(Templates,'applyTemplate', this,["lastBook.gtpl", gs.map().add("last",book)])]);
-  }
-  gSobject.errorMessage = function(head, message) {
-    swal(head, message, "error");
   }
   gSobject['sortByTitleEvent'] = function(it) {
     return gs.mc(gSobject.gQuery,"onEvent",["#titleHead", "click", gSobject["changeSort"]]);

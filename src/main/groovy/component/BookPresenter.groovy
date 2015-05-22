@@ -22,7 +22,7 @@ class BookPresenter implements Chart {
     String year
 
     void init() {
-        putCounter(counterSelector)
+        startCounter(counterSelector)
         bindNewBook()
         clearNewBook()
         gQuery('#clearBookButton').click(this.&clearNewBook)
@@ -46,7 +46,12 @@ class BookPresenter implements Chart {
         }
     }
 
-    private void putCounter(String counterSelector) {
+    @GsNative
+    void errorMessage(String head, String message) {/*
+        swal(head, message, "error");
+    */}
+
+    private void startCounter(String counterSelector) {
         booksCounter = new Counter()
         booksCounter.onClickShow = this.&showListBooks
         booksCounter.start(counterSelector)
@@ -119,17 +124,12 @@ class BookPresenter implements Chart {
             labels: groups.collect { it.key }.reverse(),
             series: groups.collect { it.value.size() }.reverse()
         ]
-        pieChart('.ct-chart', data);
+        pieChart('.ct-chart', data)
     }
 
     private updateLastBook(Book book) {
         gQuery('#lastBook').html Templates.applyTemplate('lastBook.gtpl', [last: book])
     }
-
-    @GsNative
-    private errorMessage(String head, String message) {/*
-        swal(head, message, "error");
-    */}
 
     private sortByTitleEvent() {
         gQuery.onEvent('#titleHead', 'click', this.&changeSort)

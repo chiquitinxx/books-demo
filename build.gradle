@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '1.2.3.RELEASE'
+        optimizeRjs = false
     }
     repositories {
         mavenLocal() //todo remove
@@ -9,7 +10,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.4.0'
-        classpath 'org.grooscript:grooscript-gradle-plugin:1.1.0-SNAPSHOT'
+        classpath 'org.grooscript:grooscript-gradle-plugin:1.1.1-SNAPSHOT'
     }
 }
 
@@ -47,7 +48,7 @@ dependencies {
     compile("org.springframework:spring-messaging")
     compile("org.springframework.boot:spring-boot-starter-groovy-templates")
     compile("org.codehaus.groovy:groovy-all:2.4.3")
-    compile("org.grooscript:grooscript:1.1.0-SNAPSHOT") {
+    compile("org.grooscript:grooscript:1.1.1-SNAPSHOT") {
         exclude module: "groovy"
         exclude module: "groovy-json"
     }
@@ -68,19 +69,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
 
-/*
-grooscript {
-    source = ['src/main/groovy/component']
-    destination = 'src/main/resources/static/js/app'
-    classPath = ['src/main/groovy']
-}
-
-task bookConvertThread(type: org.grooscript.gradle.ThreadTask) {
-    source = ['src/main/groovy/demo/model/Book.groovy']
-    destination = 'src/main/resources/static/js/app'
-    classPath = ['src/main/groovy']
-}*/
-
 task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
     templatesPath = 'src/main/resources/templates'
     templates = ['bookList.gtpl', 'bookTable.gtpl', 'lastBook.gtpl']
@@ -88,19 +76,37 @@ task templatesListen(type: org.grooscript.gradle.TemplatesThreadTask) {
     classPath = ['src/main/groovy']
 }
 
+def optimizeRequireJs(withOutput = false) {
+    def process = "r.js -o build.js".execute()
+    process.waitForOrKill(12000)
+    if (withOutput) {
+        println "Require.js optimized: ${process.exitValue()}"
+        println "Error:" + process.err.text
+        println "Out:" + process.in.text
+    }
+}
+
 spy {
-    files = ['src/main/resources/templates', 'src/main/resources/static/css']
+    files = ['src/main/resources/static/js/app',
+             'src/main/resources/static/css',
+             'src/main/resources/static/js/demo.js']
     onChanges = { list ->
+        if (list.any { it.endsWith('static/js/app/bookDemo.js') } && optimizeRjs) {
+            optimizeRequireJs()
+        }
         springWebsocketTo 'http://localhost:8080/demo' data 'templates' onChannel '/app/reload'
     }
 }
 
-task myRequire(type: org.grooscript.gradle.RequireJsTask) {
+task myRequire(type: org.grooscript.gradle.RequireJsThreadTask) {
     sourceFile = 'src/main/groovy/bookDemo.groovy'
-    //sourceFile = 'src/main/groovy/component/Chart.groovy'
     destinationFolder = 'src/main/resources/static/js/app'
     mainContextScope = ['$', 'location']
 }
 
-spyChanges.dependsOn templatesListen //, thread, bookConvertThread
+task rjs() << {
+    optimizeRequireJs(true)
+}
+
+spyChanges.dependsOn templatesListen, myRequire
 bootRun.dependsOn startManagedMongoDb, spyChanges
