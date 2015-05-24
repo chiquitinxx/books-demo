@@ -2,6 +2,7 @@ package component
 
 import demo.model.Book
 import org.grooscript.asts.GsNative
+import org.grooscript.asts.RequireJsModule
 import org.grooscript.jquery.GQuery
 import org.grooscript.jquery.GQueryImpl
 import org.grooscript.templates.Templates
@@ -21,12 +22,16 @@ class BookPresenter implements Chart {
     String author
     String year
 
+    @RequireJsModule(path = 'messages')
+    def messages
+
     void init() {
         startCounter(counterSelector)
         bindNewBook()
         clearNewBook()
         gQuery('#clearBookButton').click(this.&clearNewBook)
         getBooksFromServer()
+        println messages.salute
     }
 
     void addBookToServer() {

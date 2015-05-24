@@ -56,11 +56,11 @@ public class ComponentImpl implements ASTTransformation {
         def params = new Parameter[1]
         params[0] = new Parameter(ClassHelper.STRING_TYPE, 'selector')
         classNode.addMethod('start', Modifier.PUBLIC, null, params,
-                ClassNode.EMPTY_ARRAY, new AstBuilder().buildFromCode {
+                ClassNode.EMPTY_ARRAY, new AstBuilder().buildFromString('''
             this.selector = selector
             this.init()
             this.render()
-        }[0])
+        ''')[0])
     }
 
     private manageRenderMethod(ClassNode classNode) {

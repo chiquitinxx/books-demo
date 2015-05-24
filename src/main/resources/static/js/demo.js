@@ -10,8 +10,4 @@ requirejs.config({
     }
 });
 
-//requirejs(['jquery', 'lib/grooscript.min', 'lib/grooscript-tools', 'lib/sweet-alert.min', 'lib/chartist.min'], function($) {
-//    requirejs(['Templates', 'lib/sockjs-0.3.4', 'lib/stomp', 'bookDemo']);
-//});
-
 requirejs(['jquery', 'bookDemo']);
