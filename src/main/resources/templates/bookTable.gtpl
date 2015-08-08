@@ -9,9 +9,23 @@ table {
         }
     }
     def markLetters = { data ->
-        data.replaceAll(
-            model.searchString, "<span class='bg-red'>${model.searchString}</span>"
-        )
+        if (model.searchString) {
+
+            def upper = data.toUpperCase()
+            def toSearch = model.searchString.toUpperCase()
+
+            def i = upper.indexOf(toSearch)
+            def inc = 0
+            while (i >= 0) {
+                def start = i + (inc * 28)
+                data = data.substring(0, start) +
+                    "<span class='bg-red'>${data.substring(start, start + toSearch.size())}</span>" +
+                    data.substring(start + toSearch.size())
+                inc++
+                i = upper.indexOf(toSearch, i + 1)
+            }
+        }
+        data
     }
     tbody {
         def list = model.sortByTitle ? model.listBooks.sort(false, { it.title }) : model.listBooks

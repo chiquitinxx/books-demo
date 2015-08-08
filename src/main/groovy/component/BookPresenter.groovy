@@ -64,7 +64,7 @@ class BookPresenter implements Chart {
 
     void newBookFromServer(Book book) {
         books << book
-        if ($('.tableSearch')) {
+        if (gQuery('.tableSearch')) {
             changeSearchText(gQuery('#marking').val())
         }
         updateBooksNumber(books.size())
@@ -103,12 +103,12 @@ class BookPresenter implements Chart {
         setYear('')
     }
 
-    private bindNewBook() {
+    private void bindNewBook() {
         gQuery.bindAllProperties(this)
         gQuery.onEvent('#addNewBook', 'click', this.&addBookToServer)
     }
 
-    private getBooksFromServer() {
+    private void getBooksFromServer() {
         gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
             books = listBooks
             updateBooksNumber(listBooks.size())
@@ -118,11 +118,11 @@ class BookPresenter implements Chart {
         })
     }
 
-    private updateBooksNumber(number) {
+    private void updateBooksNumber(number) {
         booksCounter.number = number
     }
 
-    private drawPie() {
+    private void drawPie() {
         def groups = books.sort(false) { it.year }.
                            groupBy { it.year }
         def data = [
@@ -132,11 +132,11 @@ class BookPresenter implements Chart {
         pieChart('.ct-chart', data)
     }
 
-    private updateLastBook(Book book) {
+    private void updateLastBook(Book book) {
         gQuery('#lastBook').html Templates.applyTemplate('lastBook.gtpl', [last: book])
     }
 
-    private sortByTitleEvent() {
+    private void sortByTitleEvent() {
         gQuery.onEvent('#titleHead', 'click', this.&changeSort)
     }
 }

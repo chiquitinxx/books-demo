@@ -58,7 +58,7 @@ define(['component/Chart','demo/model/Book','component/Counter','messages'], fun
     }
     gSobject['newBookFromServer'] = function(book) {
       gs.mc(gSobject.books,'leftShift', gs.list([book]));
-      if ($(".tableSearch")) {
+      if (gs.mc(gSobject,"gQuery",[".tableSearch"])) {
         gs.mc(gSobject,"changeSearchText",[gs.mc(gs.mc(gSobject,"gQuery",["#marking"]),"val",[])]);
       };
       gs.mc(gSobject,"updateBooksNumber",[gs.mc(gSobject.books,"size",[])]);

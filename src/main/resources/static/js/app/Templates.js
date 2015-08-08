@@ -44,7 +44,19 @@ Templates.templates = gs.map().add("bookList.gtpl",function(model) {
         }]);
       }]);
       var markLetters = function(data) {
-        return gs.mc(data,"replaceAll",[gs.gp(model,"searchString"), "<span class='bg-red'>" + (gs.gp(model,"searchString")) + "</span>"]);
+        if (gs.bool(gs.gp(model,"searchString"))) {
+          var upper = gs.mc(data,"toUpperCase",[]);
+          var toSearch = gs.mc(gs.gp(model,"searchString"),"toUpperCase",[]);
+          var i = gs.mc(upper,"indexOf",[toSearch]);
+          var inc = 0;
+          while (i >= 0) {
+            var start = gs.plus(i, (gs.multiply(inc, 28)));
+            data = (gs.plus((gs.plus(gs.mc(data,"substring",[0, start]), "<span class='bg-red'>" + (gs.mc(data,"substring",[start, gs.plus(start, gs.mc(toSearch,"size",[]))])) + "</span>")), gs.mc(data,"substring",[gs.plus(start, gs.mc(toSearch,"size",[]))])));
+            inc++;
+            i = gs.mc(upper,"indexOf",[toSearch, gs.plus(i, 1)]);
+          };
+        };
+        return data;
       };
       return gs.mc(Templates,"tbody",[function(it) {
         var list = (gs.bool(gs.gp(model,"sortByTitle")) ? gs.mc(gs.gp(model,"listBooks"),"sort",[false, function(it) {
