@@ -1,9 +1,8 @@
 package component
 
+import component.view.BookView
 import demo.model.Book
 import org.grooscript.jquery.GQuery
-import org.grooscript.jquery.GQueryList
-import org.grooscript.templates.Templates
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -17,13 +16,29 @@ class BookPresenterSpec extends Specification {
         presenter.init()
 
         then:
+        1 * view.startCounter(counterSelector, _)
+        1 * view.bindBookPropertiesTo(presenter)
+        1 * view.onAddNewBook(_)
+        1 * view.onClearNewBook(_)
+        1 * view.onConsole(salute)
+        1 * gQuery.doRemoteCall(urlBooks, 'GET', null, _, _)
         presenter.author == ''
         presenter.title == ''
         presenter.year == ''
-        1 * gQuery.bindAllProperties(presenter)
-        1 * gQuery.onEvent('#addNewBook', 'click', _)
-        1 * gQuery.doRemoteCall(urlBooks, 'GET', null, _, _)
-        0 * _
+    }
+
+    def 'on receive books'() {
+        given:
+        def books = [new Book(year: 2011), new Book(year: 2015), new Book(year: 2012), new Book(year: 2015)]
+
+        when:
+        presenter.onReceiveBooks(books)
+
+        then:
+        1 * view.updateBooksNumber(books.size())
+        1 * view.pieChart(pieChartSelector, [labels: [2015, 2012, 2011], series: [2, 1, 1]])
+        presenter.books == books
+
     }
 
     def 'add book to server'() {
@@ -42,30 +57,20 @@ class BookPresenterSpec extends Specification {
         presenter.addBookToServer()
 
         then:
-        0 * _
+        1 * view.errorMessage('No!', errorMessage)
 
         where:
-        property | value
-        'author' | null
-        'year'   | null
-        'title'  | null
-        'author' | ''
-        'year'   | ''
-        'title'  | ''
-        'year'   | '1900'
+        property | value    | errorMessage
+        'author' | null     | 'Author missing'
+        'year'   | null     | 'Missing year'
+        'title'  | null     | 'Forgot title'
+        'author' | ''       | 'Author missing'
+        'year'   | ''       | 'Missing year'
+        'title'  | ''       | 'Forgot title'
+        'year'   | '1900'   | 'At least XX century'
     }
 
-    void 'get new book from server'() {
-        given:
-        def lastBookHtml = 'lastBookHtml'
-        Templates.templates = ['lastBook.gtpl': { it -> assert book == it.last; return lastBookHtml}]
-
-        when:
-        presenter.newBookFromServer(book)
-
-        then:
-        1 * gQuery.call('#lastBook') >> gQueryList
-        1 * gQueryList.methodMissing('html', [lastBookHtml])
+    def setup() {
         0 * _
     }
 
@@ -73,13 +78,18 @@ class BookPresenterSpec extends Specification {
     private author = 'author'
     private year = '2012'
     private book = new Book(author: author, title: title, year: Integer.parseInt(year))
-    private counter = Stub(Counter)
     private gQuery = Mock(GQuery)
-    private gQueryList = Mock(GQueryList)
     private urlBooks = 'urlBooks'
+    private counterSelector = 'counterSelector'
     private bookListSelector = 'bookListSelector'
-    private presenter = new BookPresenter(gQuery: gQuery, booksCounter: counter,
-            urlBooks: urlBooks, booksListSelector: bookListSelector,
-            author: author, title: title, year: year
+    private pieChartSelector = 'pieChartSelector'
+    private salute = 'hello world'
+    private view = Mock(BookView)
+    private messages = [
+        salute: salute
+    ]
+    private presenter = new BookPresenter(gQuery: gQuery, view: view, counterSelector: counterSelector,
+            urlBooks: urlBooks, booksListSelector: bookListSelector, author: author, title: title, year: year,
+            messages: messages, pieChartSelector: pieChartSelector
     )
 }

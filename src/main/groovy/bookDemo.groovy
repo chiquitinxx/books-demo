@@ -1,13 +1,19 @@
 import component.BookPresenter
 import component.StompClient
+import component.view.BookView
 import org.grooscript.jquery.GQueryImpl
 
-new GQueryImpl().onReady {
+def gQuery = new GQueryImpl()
+
+gQuery.onReady {
 
     def bookPresenter = new BookPresenter(
-        urlBooks: '/books',
-        booksListSelector: '.bookList',
-        counterSelector: '#counter'
+            urlBooks: '/books',
+            booksListSelector: '.bookList',
+            counterSelector: '#counter',
+            pieChartSelector: '.ct-chart',
+            view: new BookView(gQuery: gQuery),
+            gQuery: gQuery
     )
 
     def stompClient = new StompClient()
@@ -17,14 +23,10 @@ new GQueryImpl().onReady {
     stompClient.subscribe('/topic/time') { msg ->
         $('#actualTime').text(msg.date)
     }
-    stompClient.subscribe('/topic/newBook',
-            { book ->
-                bookPresenter.newBookFromServer(book)
-            }
-        /*{ book, presenter ->
-            presenter.newBookFromServer(book)
-        }.rcurry(bookPresenter)*/
-    )
+    stompClient.subscribe('/topic/newBook') { book ->
+        bookPresenter.newBookFromServer(book)
+    }
+
     stompClient.start '/demo'
 
     bookPresenter.init()

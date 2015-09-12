@@ -1,20 +1,21 @@
 package component
 
+import component.view.BookView
 import demo.model.Book
-import org.grooscript.asts.GsNative
 import org.grooscript.asts.RequireJsModule
 import org.grooscript.jquery.GQuery
-import org.grooscript.jquery.GQueryImpl
 import org.grooscript.templates.Templates
 
-class BookPresenter implements Chart {
+class BookPresenter {
 
     List<Book> books = []
     String urlBooks
     String booksListSelector
     String counterSelector
-    Counter booksCounter
-    GQuery gQuery = new GQueryImpl()
+    String pieChartSelector
+
+    BookView view
+    GQuery gQuery
     boolean sortByTitle = false
 
     //New book properties
@@ -26,12 +27,13 @@ class BookPresenter implements Chart {
     def messages
 
     void init() {
-        startCounter(counterSelector)
-        bindNewBook()
+        view.startCounter(counterSelector, this.&showListBooks)
+        view.bindBookPropertiesTo(this)
+        view.onAddNewBook(this.&addBookToServer)
+        view.onClearNewBook(this.&clearNewBook)
         clearNewBook()
-        gQuery('#clearBookButton').click(this.&clearNewBook)
         getBooksFromServer()
-        println messages.salute
+        view.onConsole messages.salute
     }
 
     void addBookToServer() {
@@ -41,33 +43,23 @@ class BookPresenter implements Chart {
                 if (data.result == 'OK') {
                     clearNewBook()
                 } else {
-                    errorMessage 'Error', 'Validation server error adding book.'
+                    view.errorMessage 'Error', 'Validation server error adding book.'
                 }
             }, { error ->
-                errorMessage 'Error', "Server error adding book: ${error}"
+                view.errorMessage 'Error', "Server error adding book: ${error}"
             })
         } else {
-            errorMessage('Nope', book.errorMessage())
+            view.errorMessage('Nope', book.errorMessage())
         }
-    }
-
-    @GsNative
-    void errorMessage(String head, String message) {/*
-        swal(head, message, "error");
-    */}
-
-    private void startCounter(String counterSelector) {
-        booksCounter = new Counter()
-        booksCounter.onClickShow = this.&showListBooks
-        booksCounter.start(counterSelector)
     }
 
     void newBookFromServer(Book book) {
         books << book
         if (gQuery('.tableSearch')) {
+            println 'Changing!'
             changeSearchText(gQuery('#marking').val())
         }
-        updateBooksNumber(books.size())
+        view.updateBooksNumber(books.size())
         updateLastBook(book)
         drawPie()
     }
@@ -103,23 +95,16 @@ class BookPresenter implements Chart {
         setYear('')
     }
 
-    private void bindNewBook() {
-        gQuery.bindAllProperties(this)
-        gQuery.onEvent('#addNewBook', 'click', this.&addBookToServer)
+    void onReceiveBooks(List<Book> listBooks) {
+        books = listBooks
+        view.updateBooksNumber(listBooks.size())
+        drawPie()
     }
 
     private void getBooksFromServer() {
-        gQuery.doRemoteCall(urlBooks, 'GET', null, { listBooks ->
-            books = listBooks
-            updateBooksNumber(listBooks.size())
-            drawPie()
-        }, { msg ->
-            errorMessage 'Error', "Error getBooksFromServer: $msg"
+        gQuery.doRemoteCall(urlBooks, 'GET', null, this.&onReceiveBooks, {msg ->
+            view.errorMessage 'Error', "Error getBooksFromServer: $msg"
         })
-    }
-
-    private void updateBooksNumber(number) {
-        booksCounter.number = number
     }
 
     private void drawPie() {
@@ -129,7 +114,7 @@ class BookPresenter implements Chart {
             labels: groups.collect { it.key }.reverse(),
             series: groups.collect { it.value.size() }.reverse()
         ]
-        pieChart('.ct-chart', data)
+        view.pieChart(pieChartSelector, data) //'.ct-chart'
     }
 
     private void updateLastBook(Book book) {

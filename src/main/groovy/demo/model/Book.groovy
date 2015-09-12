@@ -19,7 +19,8 @@ class Book {
         def messages = []
         if (!title) messages << 'Forgot title'
         if (!author) messages << 'Author missing'
-        if (year <= 1900) messages << 'At least XX century'
+        if (!year) messages << 'Missing year'
+        if (year && year <= 1900) messages << 'At least XX century'
         messages.join('\n')
     }
 }

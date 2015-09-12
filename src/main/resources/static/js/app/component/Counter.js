@@ -11,10 +11,10 @@ define(['component/Colorable'], function (Colorable) {
     if (Colorable['getProperty']) {
       gSobject.getProperty = function() { return Colorable.getProperty(gSobject); }
     }
-    gSobject.setColorClasses = function(x1) { return Colorable.setColorClasses(gSobject,x1); }
     gSobject.randomColor = function() { return Colorable.randomColor(gSobject); }
-    gSobject.getColorClasses = function() { return Colorable.getColorClasses(gSobject); }
+    gSobject.setColorClasses = function(x1) { return Colorable.setColorClasses(gSobject,x1); }
     Colorable.$init$(gSobject);
+    gSobject.getColorClasses = function() { return Colorable.getColorClasses(gSobject); }
     gSobject.number = null;
     gSobject.onClickShow = null;
     gSobject.gQuery = GQueryImpl();

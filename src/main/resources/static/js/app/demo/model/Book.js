@@ -19,7 +19,10 @@ define(function () {
       if (!gs.bool(gSobject.author)) {
         gs.mc(messages,'leftShift', gs.list(["Author missing"]));
       };
-      if (gSobject.year <= 1900) {
+      if (!gs.bool(gSobject.year)) {
+        gs.mc(messages,'leftShift', gs.list(["Missing year"]));
+      };
+      if ((gs.bool(gSobject.year)) && (gSobject.year <= 1900)) {
         gs.mc(messages,'leftShift', gs.list(["At least XX century"]));
       };
       return gs.mc(messages,"join",["\n"]);
