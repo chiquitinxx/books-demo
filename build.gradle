@@ -42,7 +42,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework:spring-messaging")
-    //compile("org.springframework.boot:spring-boot-starter-groovy-templates")
     compile("org.codehaus.groovy:groovy-all:2.4.4")
     compile("org.grooscript:grooscript:1.2.0") {
         exclude module: "groovy"

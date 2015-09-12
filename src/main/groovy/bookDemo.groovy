@@ -2,6 +2,7 @@ import component.BookPresenter
 import component.StompClient
 import component.view.BookView
 import org.grooscript.jquery.GQueryImpl
+import static org.grooscript.GrooScript.nativeJs
 
 def gQuery = new GQueryImpl()
 
@@ -18,7 +19,7 @@ gQuery.onReady {
 
     def stompClient = new StompClient()
     stompClient.subscribe('/topic/reload') {
-        location.reload()
+        nativeJs('location.reload()')
     }
     stompClient.subscribe('/topic/time') { msg ->
         $('#actualTime').text(msg.date)

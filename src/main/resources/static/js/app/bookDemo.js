@@ -4,7 +4,7 @@ define(['component/view/BookView','component/BookPresenter','component/StompClie
     var bookPresenter = BookPresenter(gs.map().add("urlBooks","/books").add("booksListSelector",".bookList").add("counterSelector","#counter").add("pieChartSelector",".ct-chart").add("view",BookView(gs.map().add("gQuery",gQuery))).add("gQuery",gQuery));
     var stompClient = StompClient();
     gs.mc(stompClient,"subscribe",["/topic/reload", function(it) {
-      return gs.mc(location,"reload",[]);
+      return location.reload();
     }]);
     gs.mc(stompClient,"subscribe",["/topic/time", function(msg) {
       return gs.mc($("#actualTime"),"text",[gs.gp(msg,"date")]);

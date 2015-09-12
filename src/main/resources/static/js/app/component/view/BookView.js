@@ -11,8 +11,8 @@ define(['component/Chart','component/Counter'], function (Chart,Counter) {
     if (Chart['getProperty']) {
       gSobject.getProperty = function() { return Chart.getProperty(gSobject); }
     }
-    gSobject.pieChart = function(x1,x2) { return Chart.pieChart(gSobject,x1,x2); }
     Chart.$init$(gSobject);
+    gSobject.pieChart = function(x1,x2) { return Chart.pieChart(gSobject,x1,x2); }
     gSobject.booksCounter = null;
     gSobject.gQuery = null;
     gSobject['startCounter'] = function(counterSelector, onClick) {
